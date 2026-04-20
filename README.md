@@ -1,0 +1,2 @@
+# du_an_bao_ton_dong_vat_sach_do
+resnet18 finetuning
