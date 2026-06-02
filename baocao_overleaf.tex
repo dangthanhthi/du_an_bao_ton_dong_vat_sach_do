@@ -1,0 +1,257 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{vietnam}
+\usepackage[left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% Cấu hình hiển thị code python trong báo cáo
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+% --- KHUNG BÌA TRANG TRỌNG ---
+\begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+    \draw[line width = 3pt] ($(current page.north west) + (3cm,-2cm)$) rectangle ($(current page.south east) + (-1.5cm,2cm)$);
+    \draw[line width = 1pt] ($(current page.north west) + (2.85cm,-2.15cm)$) rectangle ($(current page.south east) + (-1.65cm,2.15cm)$);
+\end{tikzpicture}
+
+\begin{center}
+    \large BỘ CÔNG THƯƠNG \\
+    \large \textbf{TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH} \\
+    \large \textbf{KHOA CÔNG NGHỆ THÔNG TIN} \\
+    \vfill
+    
+    \Large \textbf{BÁO CÁO CUỐI KỲ HỌC PHẦN} \\
+    \Huge \textbf{DEEP LEARNING} \\
+    \vfill
+    
+    \begin{minipage}{0.8\textwidth}
+    \centering
+    \Large \textbf{ĐỀ TÀI:}\\
+    \Large \textbf{XÂY DỰNG HỆ THỐNG NHẬN DIỆN 9 LOÀI ĐỘNG VẬT SÁCH ĐỎ VIỆT NAM DỰA TRÊN KIẾN TRÚC RESNET-18 TRANSFER LEARNING TÍCH HỢP GIẢI THÍCH MÔ HÌNH GRAD-CAM}
+    \end{minipage}
+    
+    \vfill
+    
+    \begin{flushleft}
+    \large \textbf{NHÓM THỰC HIỆN:} \\
+    \large 1. Đặng Thành Thi (Nhóm trưởng) - MSSV: 2001230918 \\
+    \large 2. Lưu Đức Linh (Thành viên) - MSSV: 2001230444 \\
+    \large 3. Trần Xuân Hướng (Thành viên) - MSSV: 2001230339 \\
+    \end{flushleft}
+    
+    \vfill
+    \large \textbf{TP. HỒ CHÍ MINH, THÁNG 06 NĂM 2026}
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% --- MỤC LỤC ---
+\tableofcontents
+\newpage
+
+% --- LỜI MỞ ĐẦU ---
+\chapter*{Lời mở đầu}
+\addcontentsline{toc}{chapter}{Lời mở đầu}
+Trong bối cảnh biến đổi khí hậu toàn cầu và sự suy giảm nghiêm trọng của đa dạng sinh học, bảo tồn động vật hoang dã nguy cấp đã trở thành một nhiệm vụ vô cùng cấp thiết, không chỉ ở Việt Nam mà trên toàn thế giới. Việc theo dõi, giám sát và phân loại các loài động vật có tên trong Sách Đỏ là bước đầu tiên và cốt lõi nhất để xây dựng các chính sách bảo tồn bền vững. Tuy nhiên, các phương pháp giám sát truyền thống dựa vào con người thường tốn kém thời gian, chi phí và nhân lực, đồng thời dễ gặp sai sót khi quan sát từ xa hoặc trong các điều kiện ánh sáng phức tạp của rừng già hoang dã.
+
+Sự bùng nổ của trí tuệ nhân tạo (AI), đặc biệt là lĩnh vực Deep Learning (Học sâu) và Thị giác máy tính (Computer Vision), đã mở ra những giải pháp đột phá cho bài toán này. Bằng cách ứng dụng các mô hình mạng nơ-ron tích chập (CNN) sâu, hệ thống có khả năng nhận diện tự động hình ảnh và video của các loài động vật hoang dã với độ chính xác tiệm cận con người. Đặc biệt, việc ứng dụng kỹ thuật Transfer Learning giúp tận dụng được các mô hình đã huấn luyện trước trên dữ liệu lớn để áp dụng hiệu quả cho các tập dữ liệu nhỏ của động vật hoang dã quý hiếm mà không cần lượng tài nguyên tính toán khổng lồ.
+
+Đề tài \textbf{“Xây dựng hệ thống nhận diện 9 loài động vật Sách Đỏ Việt Nam dựa trên kiến trúc ResNet-18 Transfer Learning tích hợp giải thích mô hình Grad-CAM”} ra đời nhằm xây dựng một pipeline hoàn chỉnh từ khâu thu thập dữ liệu thô, cân bằng dữ liệu bằng kỹ thuật tăng cường ảnh, huấn luyện mô hình học sâu tối ưu, đánh giá hiệu năng khoa học bằng đồ thị ROC-AUC và triển khai ứng dụng thực tế trên môi trường Desktop và Web. Báo cáo này trình bày chi tiết về cơ sở lý thuyết, quá trình thực nghiệm và các kết quả đạt được của nhóm nghiên cứu.
+\newpage
+
+\pagenumbering{arabic}
+
+% --- CHƯƠNG 1 ---
+\chapter{Giới thiệu đề tài}
+
+\section{Bối cảnh và động cơ thực hiện}
+Việt Nam là một trong những quốc gia có đa dạng sinh học phong phú bậc nhất Đông Nam Á, tuy nhiên cũng là điểm nóng về nguy cơ tuyệt chủng của nhiều loài động vật đặc hữu như Vọoc Chà Vá, Gấu Ngựa, Tê Tê Java... Sự phát triển mạnh mẽ của khoa học máy tính đã mang lại cơ hội áp dụng công nghệ số vào bảo tồn sinh thái. Các nghiên cứu Deep Learning trước đây thường tập trung vào các bài toán kinh điển như nhận diện khuôn mặt hoặc biển số xe. Việc thiếu các hệ thống nhận diện động vật quý hiếm chuyên biệt cho khu vực rừng nhiệt đới Việt Nam là động cơ to lớn để nhóm thực hiện đề tài này.
+
+Đề tài hướng tới việc xây dựng một pipeline khép kín, từ việc chuẩn bị dữ liệu đồng đều, huấn luyện mô hình sâu cho đến thiết lập các giao diện trực quan hỗ trợ người dùng cuối. Điều này giúp nâng cao nhận thức cộng đồng và hỗ trợ các kiểm lâm viên trong công tác tuần tra, bảo vệ rừng rậm nhiệt đới.
+
+\section{Nhu cầu thực tiễn và bài toán cần giải quyết}
+Bài toán đặt ra cho hệ thống bao gồm:
+\begin{itemize}
+    \item \textbf{Sự lệch lớp dữ liệu (Class Imbalance):} Số lượng ảnh của các loài trong tự nhiên rất khan hiếm và không đồng đều. AI cần một tập dữ liệu cân bằng để tránh dự đoán thiên lệch.
+    \item \textbf{Tính minh bạch của AI (Explainable AI):} Các mô hình học sâu thường bị coi là "hộp đen" (black box) vì người dùng không biết AI dựa vào đâu để đưa ra dự đoán. Cần tích hợp cơ chế giải thích trực quan để người dùng tin tưởng kết quả.
+    \item \textbf{Nhận diện nhầm lẫn (Out-of-distribution detection):} Cần có bộ lọc để ngăn việc AI nhận diện sai các động vật thông thường hoặc loài lạ thành động vật Sách Đỏ.
+\end{itemize}
+
+\section{Mục tiêu nghiên cứu}
+Mục tiêu tổng quát là xây dựng một mô hình nhận diện chính xác 9 loài động vật nguy cấp dựa trên ResNet-18 và phát triển ứng dụng giao diện.
+Các mục tiêu cụ thể gồm:
+\begin{enumerate}
+    \item Đạt mốc 300 ảnh chuẩn hóa cho mỗi loài thông qua Image Augmentation.
+    \item Đóng băng/rã đông hợp lý các layer ResNet-18 để huấn luyện đạt độ chính xác tập validation >93\%.
+    \item Tích hợp Grad-CAM để biểu diễn heatmap chú ý của mô hình AI.
+    \item Phát triển ứng dụng Desktop bằng CustomTkinter và ứng dụng Web trực tuyến bằng Streamlit.
+\end{enumerate}
+
+\section{Phạm vi và giới hạn đề tài}
+\begin{itemize}
+    \item \textbf{Phạm vi:} Nhận diện 9 loài đặc trưng gồm: Báo Gấm, Cu Li Nhỏ, Gấu Ngựa, Hổ Đông Dương, Hươu Sao, Tê Tê Java, Voi Châu Á, Voọc Chà Vá, Vượn Má Vàng.
+    \item \textbf{Giới hạn:} Hệ thống nhận diện từ ảnh hoặc video tĩnh tĩnh/tải lên, chưa hỗ trợ luồng camera giám sát thời gian thực trên quy mô lớn của rừng quốc gia.
+\end{itemize}
+
+\section{Công nghệ và ngôn ngữ lập trình chính}
+\begin{itemize}
+    \item \textbf{Ngôn ngữ:} Python 3.10+ (Đọc, ghi, huấn luyện và phát triển ứng dụng).
+    \item \textbf{Thư viện AI:} PyTorch & TorchVision (Định nghĩa mạng, tối ưu hóa và suy luận).
+    \item \textbf{Giao diện:} CustomTkinter (Desktop GUI) & Streamlit (Web App).
+    \item \textbf{Xử lý ảnh:} OpenCV & Pillow (Tiền xử lý ảnh, trích xuất khung hình video).
+\end{itemize}
+\newpage
+
+% --- CHƯƠNG 2 ---
+\chapter{Kiến trúc hệ thống và Các phân hệ chính}
+
+\section{Sơ đồ luồng hoạt động hệ thống (System Pipeline)}
+Hệ thống vận hành theo một quy trình tuần tự chặt chẽ:
+\begin{enumerate}
+    \item \textbf{Thu thập dữ liệu thô:} Script cào ảnh tự động từ Bing.
+    \item \textbf{Tăng cường dữ liệu:} Áp dụng lật, xoay ảnh ngẫu nhiên để cân bằng lớp dữ liệu.
+    \item \textbf{Tiền xử lý ảnh:} Resize ảnh về $224 \times 224$ và chuẩn hóa theo chuẩn ImageNet.
+    \item \textbf{Huấn luyện mô hình:} Thực hiện quá trình Fine-tuning mô hình ResNet-18.
+    \item \textbf{Đánh giá và Kiểm thử:} Tính toán các chỉ số và vẽ ROC-AUC.
+    \item \textbf{Triển khai:} Ứng dụng Desktop & Web sử dụng tệp trọng số lưu trữ.
+\end{enumerate}
+
+\section{Phân hệ Kỹ thuật Dữ liệu (Data Pipeline)}
+Đảm nhận vai trò thu thập và làm sạch dữ liệu đầu vào. File `crawl_bing_images.py` cào ảnh tự động theo từ khóa loài. File `canbang.py` kiểm tra số lượng ảnh hiện tại và tự động sinh thêm các ảnh biến thể để đảm bảo phân phối cân bằng lý tưởng của tập dữ liệu.
+
+\section{Phân hệ Huấn luyện & Đánh giá mô hình AI (Model Pipeline)}
+Thực hiện quá trình tối ưu hóa trọng số của mô hình. File `resnet18finetuning.py` định nghĩa cấu trúc mạng nơ-ron học sâu. File `train_resnet18_full.py` chạy vòng lặp huấn luyện, tính toán mất mát, cập nhật gradient ngược và lưu lại trọng số tối ưu nhất (`ResNet18_Best_Weights.pth`).
+
+\section{Phân hệ Phát triển Ứng dụng (App Deployment Pipeline)}
+Đưa mô hình AI vào thực tế thông qua các ứng dụng tương tác trực quan:
+\begin{itemize}
+    \item `app_desktop.py` tích hợp giao diện tối sang trọng bằng CustomTkinter, hiển thị kết quả phân tích song song với bản đồ nhiệt Grad-CAM chỉ ra vùng đặc trưng giúp AI phân loại vật thể.
+    \item `appnhandien.py` cung cấp giải pháp đám mây tối giản bằng Streamlit giúp nhận diện hình ảnh và video nhanh chóng trên web.
+\end{itemize}
+\newpage
+
+% --- CHƯƠNG 3 ---
+\chapter{Tập dữ liệu & Tiền xử lý (Data Pipeline)}
+
+\section{Giới thiệu Dataset 9 loài động vật hoang dã}
+Tập dữ liệu bao gồm 9 thư mục con tương ứng với 9 loài động vật quý hiếm cần bảo tồn. Sau quá trình chuẩn bị dữ liệu nghiêm ngặt, mỗi thư mục loài chứa chính xác 300 hình ảnh chất lượng cao định dạng JPG/PNG, tổng cộng tập dữ liệu có 2.700 hình ảnh.
+
+\section{Kỹ thuật Augmentation và Cân bằng lớp dữ liệu}
+Để tránh tình trạng mô hình bị Overfitting và đạt độ khái quát hóa cao, các phép biến đổi hình ảnh được áp dụng ngẫu nhiên trong quá trình cân bằng dữ liệu đầu vào gồm:
+\begin{itemize}
+    \item Lật ảnh nằm ngang ngẫu nhiên (Random Horizontal Flip) với xác suất $p=1.0$ để nhân đôi hướng nhìn của động vật.
+    \item Xoay ảnh ngẫu nhiên (Random Rotation) trong khoảng từ $-15^\circ$ đến $15^\circ$.
+    \item Biến đổi độ sáng (Brightness) và độ tương phản (Contrast) ngẫu nhiên bằng bộ lọc Color Jitter với biên độ biến thiên $15\%$.
+\end{itemize}
+
+\section{Phân chia tập dữ liệu huấn luyện khoa học}
+Tập dữ liệu được phân chia độc lập theo tỷ lệ chuẩn nghiên cứu học sâu $7:2:1$ thông qua script `tienxulyanh.py`:
+\begin{itemize}
+    \item \textbf{Tập Huấn luyện (Train Set - 70\%):} Gồm 1.890 ảnh dùng để tối ưu hóa trọng số mô hình.
+    \item \textbf{Tập Kiểm thử Tinh chỉnh (Validation Set - 20\%):} Gồm 540 ảnh dùng để kiểm duyệt lỗi và chọn ra epoch tốt nhất để lưu mô hình.
+    \item \textbf{Tập Kiểm thử Độc lập (Test Set - 10\%):} Gồm 270 ảnh hoàn toàn tách biệt dùng để đánh giá năng lực suy luận cuối cùng của AI.
+\end{itemize}
+\newpage
+
+% --- CHƯƠNG 4 ---
+\chapter{Thiết kế giao diện & Trực quan hóa mô hình AI}
+
+\section{Thiết kế ứng dụng Desktop chuyên nghiệp (CustomTkinter)}
+Giao diện Desktop ứng dụng phong cách Modern Dark Mode với bố cục chia thành ba cột trực quan:
+\begin{enumerate}
+    \item \textbf{Thanh điều khiển (Sidebar):} Chứa các nút bấm mở ảnh, mở video và menu tùy chọn cấu hình hệ thống.
+    \item \textbf{Khung hiển thị chính (Center Panel):} Hiển thị hình ảnh hoặc video đầu vào với kích thước lớn sắc nét.
+    \item \textbf{Khung phân tích AI (Right Panel):} Chứa vùng hiển thị biểu đồ nhiệt Grad-CAM, thanh trạng thái hiển thị top 3 xác suất phân loại và hồ sơ giới thiệu trạng thái nguy cấp của động vật truy vấn động từ Sách Đỏ.
+\end{enumerate}
+
+\section{Nguyên lý trực quan hóa Explainable AI (Grad-CAM)}
+Cơ chế **Grad-CAM (Gradient-weighted Class Activation Mapping)** cho phép trực quan hóa vùng mô hình tập trung chú ý:
+\begin{itemize}
+    \item Hệ thống trích xuất bản đồ kích hoạt (feature maps) từ lớp tích chập cuối cùng của ResNet-18 (nơi chứa các thông tin không gian phong phú nhất).
+    \item Tính đạo hàm ngược của điểm số dự đoán của lớp mục tiêu đối với bản đồ kích hoạt để xác định trọng số tầm quan trọng của mỗi kênh đặc trưng.
+    \item Thực hiện phép nhân tổ hợp tuyến tính giữa bản đồ kích hoạt và các trọng số, đi qua hàm chỉnh lưu ReLU để tạo heatmap. Heatmap được nội suy kích thước bằng PIL và đè lên ảnh gốc với độ trong suốt $40\%$ bằng thuật toán OpenCV, hiển thị vùng trọng tâm màu đỏ ấm (AI tập trung nhất) và màu xanh mát (vùng AI bỏ qua).
+\end{itemize}
+
+\section{Thiết kế ứng dụng Web trực tuyến (Streamlit Web App)}
+Ứng dụng web được tối ưu hóa giao diện phẳng, hiển thị biểu đồ xác suất bằng thanh tiến trình động. Người dùng có thể kéo thả tệp ảnh hoặc video từ máy cá nhân lên đám mây cục bộ để hệ thống tự động xử lý suy luận theo thời gian thực và trích xuất các khoảnh khắc phát hiện động vật thành lưới ảnh trực quan.
+\newpage
+
+% --- CHƯƠNG 5 ---
+\chapter{Vận dụng lý thuyết Deep Learning vào dự án}
+
+\section{Kiến trúc ResNet-18 Transfer Learning và Đóng băng tham số}
+Trong dự án này, nhóm áp dụng phương pháp **Fine-tuning** trên mạng tích chập sâu ResNet-18. 
+Phương pháp đóng băng layer được biểu diễn bằng công thức quản lý đạo hàm:
+\begin{equation}
+\theta_{layer1, 2} \leftarrow \theta_{layer1, 2} \quad (\text{requires\_grad} = \text{False})
+\end{equation}
+\begin{equation}
+\theta_{layer3, 4, fc} \leftarrow \theta_{layer3, 4, fc} - \eta \nabla L(\theta) \quad (\text{requires\_grad} = \text{True})
+\end{equation}
+Các lớp mạng ban đầu lưu trữ tri thức tổng quát về hình học và màu sắc cơ bản từ tập ImageNet khổng lồ được giữ nguyên để tăng tốc độ hội tụ và giảm chi phí tính toán. Chỉ có các layer 3, 4 và bộ phân loại FC mới được tinh chỉnh học đặc trưng chuyên biệt của động vật hoang dã.
+
+\section{Hàm mất mát và Bộ tối ưu hóa Adam}
+Bộ tối ưu hóa **Adam** được sử dụng kết hợp với cơ chế **Weight Decay** (L2 Regularization) để hạn chế Overfitting:
+\begin{equation}
+w_{t+1} = w_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t - \lambda w_t
+\end{equation}
+Hàm mất mát phân loại đa lớp **CrossEntropyLoss** tích hợp cơ chế **Label Smoothing = 0.1** giúp làm mềm nhãn mục tiêu, ngăn cản mô hình AI dự đoán quá tự tin (overconfident):
+\begin{equation}
+L_{CE} = -\sum_{i=1}^{C} q_i \log(p_i) \quad \text{với} \quad q_i = (1 - \alpha) y_i + \frac{\alpha}{C}
+\end{equation}
+
+\section{Phân tích kết quả thực nghiệm và các biểu đồ hiệu năng}
+Quá trình huấn luyện thực nghiệm ghi nhận tiến trình tối ưu tuyệt vời của mô hình:
+\begin{itemize}
+    \item \textbf{Độ hội tụ lý tưởng:} Train Accuracy đạt mốc cao nhất **$99.23\%$** và Validation Accuracy đạt **$93.80\%$** tại Epoch thứ 15.
+    \item \textbf{Tính nhất quán dữ liệu:} Bảng sai số huấn luyện giảm đều đặn từ $1.5421$ về $0.5081$ và được trực quan hóa đồng bộ trong biểu đồ `Loss_Accuracy_Curves.png`.
+    \item \textbf{Khả năng phân loại độc lập:} Biểu đồ `ROC_AUC_Curve.png` chỉ ra chỉ số **AUC trung bình đạt $0.99$**, khẳng định năng lực phân biệt cực tốt của mô hình đối với tất cả 9 loài động vật hoang dã.
+\end{itemize}
+\newpage
+
+% --- LỜI KẾT ---
+\chapter*{Lời kết}
+\addcontentsline{toc}{chapter}{Lời kết}
+Đề tài \textbf{“Xây dựng hệ thống nhận diện 9 loài động vật Sách Đỏ Việt Nam dựa trên kiến trúc ResNet-18 Transfer Learning tích hợp giải thích mô hình Grad-CAM”} đã được hoàn thành trọn vẹn và đạt được tất cả các mục tiêu đề ra ban đầu. Nhóm nghiên cứu đã chứng minh được tính hiệu quả vượt trội của phương pháp Transfer Learning kết hợp kỹ thuật đóng băng tham số và Label Smoothing trong bài toán thị giác máy tính thực tế với tập dữ liệu nhỏ.
+
+Ứng dụng Desktop bằng CustomTkinter và Web App bằng Streamlit đã hoạt động ổn định, cung cấp giao diện tương tác hiện đại và mang lại trải nghiệm người dùng tối ưu. Việc tích hợp cơ chế giải thích mô hình Grad-CAM giúp gia tăng tính minh bạch, biến mô hình AI từ một "hộp đen" trở thành một công cụ phân tích có độ tin cậy cao về mặt khoa học.
+
+\textbf{Hướng phát triển tương lai:}
+Trong các giai đoạn tiếp theo, nhóm định hướng mở rộng nghiên cứu sang hai phương diện chính:
+\begin{enumerate}
+    \item Nâng cấp mô hình từ Phân loại ảnh sang **Phát hiện vật thể (Object Detection)** bằng kiến trúc YOLOv8 để khoanh vùng chính xác tọa độ của động vật trong các luồng video phức tạp có nhiều nhiễu động.
+    \item Thử nghiệm triển khai các mô hình siêu nhẹ như MobileNetV3 hoặc EdgeYOLO lên các thiết bị phần cứng nhúng (như Raspberry Pi hoặc Jetson Nano) phục vụ trực tiếp cho các trạm bẫy ảnh tự động giám sát rừng sâu dài ngày.
+\end{enumerate}
+
+\end{document}
