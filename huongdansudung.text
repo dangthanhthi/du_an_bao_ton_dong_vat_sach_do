@@ -1,0 +1,140 @@
+================================================================================
+  HƯỚNG DẪN CHI TIẾT SỬ DỤNG VÀ CHẠY ỨNG DỤNG BẰNG VISUAL STUDIO CODE (VS CODE)
+================================================================================
+
+Dự án: Nhận Diện 9 Loài Động Vật Sách Đỏ Việt Nam (ResNet18 Transfer Learning)
+Môn học: Deep Learning
+
+Tài liệu này hướng dẫn chi tiết từng bước cách mở dự án, cấu hình môi trường,
+cài đặt thư viện và khởi chạy các ứng dụng trong dự án bằng phần mềm VS Code.
+
+--------------------------------------------------------------------------------
+MỤC LỤC:
+1. Chuẩn bị công cụ & Mở dự án trong VS Code
+2. Cấu hình môi trường Python & Trình biên dịch (Interpreter)
+3. Cài đặt các thư viện cần thiết (Dependencies)
+4. Hướng dẫn chạy Ứng dụng Desktop (CustomTkinter + Grad-CAM)
+5. Hướng dẫn chạy Ứng dụng Web (Streamlit)
+6. Hướng dẫn sử dụng các Script bổ trợ (Cân bằng, tiền xử lý, cào dữ liệu...)
+7. Các lưu ý quan trọng và cách xử lý lỗi thường gặp
+
+================================================================================
+1. CHUẨN BỊ CÔNG CỤ & MỞ DỰ ÁN TRONG VS CODE
+================================================================================
+Bước 1.1: Tải và cài đặt VS Code (nếu chưa có):
+- Tải bản mới nhất tại: https://code.visualstudio.com/
+- Tiến hành cài đặt theo các bước mặc định.
+
+Bước 1.2: Cài đặt Extension Python cho VS Code:
+1. Mở VS Code lên.
+2. Click vào biểu tượng Extensions ở thanh bên trái (hoặc nhấn Ctrl + Shift + X).
+3. Tìm từ khóa "Python" (của Microsoft) và nhấn nút [Install].
+
+Bước 1.3: Mở dự án trong VS Code:
+1. Mở VS Code.
+2. Chọn File -> Open Folder... trên thanh công cụ.
+3. Tìm đến đường dẫn thư mục dự án của bạn:
+   C:\Users\MSIIIIII\Documents\GitHub\du_an_bao_ton_dong_vat_sach_do
+4. Nhấn [Select Folder]. Toàn bộ cây thư mục dự án sẽ hiển thị ở thanh Explorer bên trái.
+
+================================================================================
+2. CẤU HÌNH MÔI TRƯỜNG PYTHON & TRÌNH BIÊN DỊCH (INTERPRETER)
+================================================================================
+Để VS Code chạy đúng mã nguồn Python, bạn cần chọn đúng trình thông dịch (Interpreter) đã cài đặt Python trên máy của bạn:
+
+1. Nhấn tổ hợp phím: Ctrl + Shift + P để mở thanh lệnh (Command Palette).
+2. Nhập tìm kiếm: "Python: Select Interpreter" và nhấn Enter.
+3. Chọn phiên bản Python bạn muốn sử dụng (Khuyên dùng Python 3.9, 3.10 hoặc 3.11).
+   * Lưu ý: Nếu bạn sử dụng môi trường ảo như Anaconda hoặc venv, hãy chọn đúng đường dẫn của môi trường ảo đó.
+
+================================================================================
+3. CÀI ĐẶT CÁC THƯ VIỆN CẦN THIẾT (DEPENDENCIES)
+================================================================================
+Bước 3.1: Mở Terminal tích hợp của VS Code:
+- Nhấn tổ hợp phím tắt: Ctrl + ` (phím dấu huyền cạnh số 1)
+- Hoặc chọn Terminal -> New Terminal từ thanh menu phía trên.
+
+Bước 3.2: Thực hiện chạy lệnh cài đặt tất cả các thư viện cần thiết:
+Copy và paste dòng lệnh sau vào Terminal của VS Code rồi nhấn Enter:
+
+pip install torch torchvision numpy opencv-python pillow beautifulsoup4 requests customtkinter streamlit openpyxl pandas matplotlib scikit-learn
+
+Chờ quá trình tải xuống và cài đặt hoàn tất (thường mất từ 3-5 phút tùy thuộc tốc độ mạng).
+
+================================================================================
+4. HƯỚNG DẪN CHẠY ỨNG DỤNG DESKTOP (CUSTOMTKINTER + GRAD-CAM)
+================================================================================
+Đây là ứng dụng giao diện chính dành cho máy tính cá nhân do Đặng Thành Thi phụ trách.
+Ứng dụng có các tính năng cao cấp như:
+- Nhận diện trực tiếp qua hình ảnh tải lên hoặc luồng video thời gian thực.
+- Sử dụng Grad-CAM để hiển thị vùng tập trung (Attention Map/Heatmap) của AI.
+- Chỉ hiển thị kết quả nếu độ tin cậy đạt từ 85% trở lên.
+
+Cách chạy trên VS Code:
+Cách 1: Chạy bằng nút bấm UI của VS Code:
+1. Nhấp đúp chuột mở file `app_desktop.py` từ cột Explorer bên trái.
+2. Nhìn lên góc trên cùng bên phải cửa sổ soạn thảo, nhấn vào biểu tượng hình Tam giác (Run Python File).
+
+Cách 2: Chạy thông qua dòng lệnh Terminal:
+1. Tại ô Terminal bên dưới của dự án, nhập lệnh:
+   python app_desktop.py
+2. Nhấn Enter để khởi chạy. Cửa sổ ứng dụng "Hệ Thống Phân Tích Động Vật Hoang Dã" sẽ hiển thị lên.
+
+Cách tương tác:
+- Nhấn nút "📸 Nhận diện Ảnh" để chọn một ảnh từ máy tính -> Xem kết quả nhận diện, mức độ tin cậy và bản đồ Grad-CAM.
+- Nhấn nút "🎥 Nhận diện Video" để chọn một video chạy suy luận trực tiếp.
+
+================================================================================
+5. HƯỚNG DẪN CHẠY ỨNG DỤNG WEB (STREAMLIT)
+================================================================================
+Đây là ứng dụng phụ bằng Web App do Đặng Thành Thi thiết kế cho phép chạy nhận diện động vật ngay trên trình duyệt web.
+
+Cách chạy trên VS Code:
+1. Mở Terminal tích hợp của VS Code lên (Ctrl + `).
+2. Nhập lệnh sau và nhấn Enter:
+   streamlit run appnhandien.py
+3. VS Code sẽ tự động khởi động một máy chủ cục bộ và mở trình duyệt web mặc định của bạn tại địa chỉ: http://localhost:8501
+
+Cách tương tác trên trình duyệt Web:
+- Kéo và thả hoặc tải ảnh/video lên từ bảng điều khiển bên trái.
+- Điều chỉnh "Ngưỡng tin cậy (%)" mong muốn bằng thanh trượt trực quan.
+- Hệ thống sẽ hiển thị kết quả phân tích thời gian thực cực kỳ sinh động.
+
+================================================================================
+6. HƯỚNG DẪN SỬ DỤNG CÁC SCRIPT BỔ TRỢ
+================================================================================
+Dự án của bạn có chứa các công cụ xử lý dữ liệu mạnh mẽ của nhóm. Bạn chạy chúng bằng cách mở Terminal trong VS Code và gõ các lệnh tương ứng:
+
+1. Tiền xử lý & Chia tập dữ liệu (Phụ trách bởi Trần Xuân Hướng):
+   * Lệnh chạy: python tienxulyanh.py
+   * Chức năng: Tự động gom và phân chia ảnh trong tập dữ liệu theo tỷ lệ chuẩn 7:2:1 (70% Train, 20% Validation, 10% Test) và dọn dẹp các thư mục rác hệ thống.
+
+2. Cân bằng dữ liệu tự động (Phụ trách bởi Đặng Thành Thi):
+   * Lệnh chạy: python canbang.py
+   * Chức năng: Đọc tập dữ liệu, áp dụng kỹ thuật Data Augmentation sinh thêm ảnh tự động để mỗi loài động vật đều đạt chuẩn 300 ảnh chất lượng cao.
+
+3. Cào hình ảnh từ Bing (Phụ trách bởi Đặng Thành Thi):
+   * Lệnh chạy: python crawl_bing_images.py
+   * Chức năng: Tải ảnh tự động từ Bing Search để mở rộng dữ liệu huấn luyện.
+
+4. Giao diện kiểm thử video phụ (Phụ trách bởi Trần Xuân Hướng):
+   * Lệnh chạy: python run_video_inference.py
+   * Chức năng: Mở cửa sổ Tkinter tối giản để chạy suy luận luồng video nhanh chóng.
+
+================================================================================
+7. CÁC LƯU Ý QUAN TRỌNG VÀ CÁCH XỬ LÝ LỖI THƯỜNG GẶP
+================================================================================
+Lưu ý 7.1: File trọng số mô hình:
+- File `ResNet18_Best_Weights.pth` nặng khoảng 45MB chứa toàn bộ tri thức đã học của mạng nơ-ron. 
+- File này BẮT BUỘC phải nằm cùng cấp thư mục gốc (root) với file `app_desktop.py` và `appnhandien.py`. Nếu bạn di chuyển đi nơi khác, ứng dụng sẽ báo lỗi không tìm thấy mô hình.
+
+Lưu ý 7.2: Lỗi "ModuleNotFoundError: No module named '...'"
+- Nguyên nhân: Bạn chưa cài đặt thư viện đó vào môi trường Python hiện hành.
+- Khắc phục: Chạy lại lệnh cài đặt ở mục 3: `pip install <tên_thư_viện>` (Ví dụ: `pip install customtkinter`).
+
+Lưu ý 7.3: Lỗi hiển thị cửa sổ Tkinter bị mờ trên Windows màn hình DPI cao:
+- Ứng dụng CustomTkinter đã được tích hợp tự động điều chỉnh tỷ lệ màn hình (DPI scaling) để đảm bảo hình ảnh hiển thị sắc nét nhất. Hãy đảm bảo bạn không sửa đổi các đoạn cấu hình liên quan đến độ phân giải cửa sổ.
+
+================================================================================
+                                CHÚC BẠN THÀNH CÔNG!
+================================================================================
