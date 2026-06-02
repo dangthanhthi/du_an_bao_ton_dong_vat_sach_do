@@ -170,7 +170,7 @@ python run_video_inference.py
 
 ---
 
-## 📊 THÔNG TIN ĐÁNH GIÁ CHUYÊN MÔN HỌC PHẦN (DEEP LEARNING EVALUATION CARD)
+## 📊 THÔNG TIN ĐÁNH GIÁ 
 
 Dành cho ban đánh giá chuyên môn học phần **Deep Learning** để theo dõi và chấm điểm tiến trình thực hiện của nhóm.
 
@@ -236,6 +236,7 @@ Một phần quan trọng trong nghiên cứu Deep Learning là nhận diện v�
 * **Độ nhạy đối với ngoại cảnh thực tế (Background Bias):** Tập dữ liệu huấn luyện chủ yếu được thu thập từ internet nên mô hình có thể bị ảnh hưởng nhẹ bởi phông nền tự nhiên. Khi kiểm thử hình ảnh động vật trong môi trường nhân tạo (sở thú, lồng kính) hoặc điều kiện ánh sáng cực đoan (ban đêm, sương mù), độ chính xác có thể giảm nhẹ.
 * **Giới hạn số lượng lớp phân loại (Class Constraint):** Hệ thống hiện chỉ tập trung phân loại tối ưu **9 loài động vật nguy cấp tiêu biểu**. Trong tự nhiên còn rất nhiều loài động vật quý hiếm khác chưa được tích hợp vào bộ nhận diện.
 * **Ngưỡng tin cậy cứng (Static Threshold):** Việc áp dụng ngưỡng tin cậy cố định `85%` để lọc vật thể lạ đôi khi quá khắt khe, dẫn đến việc bỏ sót hoặc phân loại sai một số ảnh chụp động vật trong Sách Đỏ nhưng bị mờ hoặc chụp từ xa là "loài lạ".
+* **Bị nhiễu bởi các động vật cùng họ nhưng khác loài (vd hổ đông dương rất giống hổ mã lai)
 
 ### 🚀 2. Hướng nghiên cứu & phát triển trong tương lai (Future Directions)
 * **Nâng cấp kiến trúc mạng (Model Upgrade):** Thử nghiệm huấn luyện trên các kiến trúc tiên tiến hơn như **ResNeXt**, **Vision Transformer (ViT)** hoặc **YOLOv8** để nhận diện đa vật thể song song trong một khung hình với độ chính xác cao hơn.
