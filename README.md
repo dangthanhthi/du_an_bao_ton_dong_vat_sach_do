@@ -63,7 +63,7 @@ graph TD
   - Thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
   - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng dữ liệu đạt chuẩn 300 ảnh/loài (`canbang.py`).
   - Lập trình giao diện ứng dụng Desktop chuyên nghiệp tích hợp giải thích AI Grad-CAM (`app_desktop.py`) và ứng dụng Web trực tuyến Streamlit (`appnhandien.py`).
-  -Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
+  - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
   - Hỗ trợ thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`train_resnet18_full.py`).
 
 ### 2. Lưu Đức Linh
