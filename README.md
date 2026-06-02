@@ -225,3 +225,19 @@ Kết quả đánh giá cuối cùng trên **Tập kiểm thử độc lập (Te
 * **Độ nhạy trung bình (Average Recall):** `95.10%`
 * **Chỉ số AUC trung bình (Average Area Under Curve):** `0.99` (Khả năng phân loại đa lớp hoàn hảo, hạn chế tối đa báo động giả).
 * **Ngưỡng lọc tin cậy ứng dụng (App Threshold):** `85.00%` (Đảm bảo an toàn hệ thống, tự động phân loại "loài lạ" nếu độ chắc chắn dưới ngưỡng này).
+
+---
+
+## ⚠️ HẠN CHẾ HIỆN TẠI CỦA HỆ THỐNG & HƯỚNG PHÁT TRIỂN (LIMITATIONS & FUTURE DIRECTIONS)
+
+Một phần quan trọng trong nghiên cứu Deep Learning là nhận diện và phân tích các mặt hạn chế của hệ thống để đề xuất hướng cải tiến khoa học trong tương lai:
+
+### 🔍 1. Hạn chế về mặt kỹ thuật & mô hình (Technical Limitations)
+* **Độ nhạy đối với ngoại cảnh thực tế (Background Bias):** Tập dữ liệu huấn luyện chủ yếu được thu thập từ internet nên mô hình có thể bị ảnh hưởng nhẹ bởi phông nền tự nhiên. Khi kiểm thử hình ảnh động vật trong môi trường nhân tạo (sở thú, lồng kính) hoặc điều kiện ánh sáng cực đoan (ban đêm, sương mù), độ chính xác có thể giảm nhẹ.
+* **Giới hạn số lượng lớp phân loại (Class Constraint):** Hệ thống hiện chỉ tập trung phân loại tối ưu **9 loài động vật nguy cấp tiêu biểu**. Trong tự nhiên còn rất nhiều loài động vật quý hiếm khác chưa được tích hợp vào bộ nhận diện.
+* **Ngưỡng tin cậy cứng (Static Threshold):** Việc áp dụng ngưỡng tin cậy cố định `85%` để lọc vật thể lạ đôi khi quá khắt khe, dẫn đến việc bỏ sót hoặc phân loại sai một số ảnh chụp động vật trong Sách Đỏ nhưng bị mờ hoặc chụp từ xa là "loài lạ".
+
+### 🚀 2. Hướng nghiên cứu & phát triển trong tương lai (Future Directions)
+* **Nâng cấp kiến trúc mạng (Model Upgrade):** Thử nghiệm huấn luyện trên các kiến trúc tiên tiến hơn như **ResNeXt**, **Vision Transformer (ViT)** hoặc **YOLOv8** để nhận diện đa vật thể song song trong một khung hình với độ chính xác cao hơn.
+* **Tích hợp mô hình phát hiện vật thể (Object Detection):** Chuyển đổi từ mô hình Phân loại ảnh (Image Classification) sang Phát hiện vật thể (Object Detection) để khoanh vùng tọa độ (Bounding Box) chính xác của động vật trước khi thực hiện nhận diện.
+* **Thu thập thêm dữ liệu thực tế (Dataset Expansion):** Bổ sung thêm các ảnh chụp thực địa từ máy bẫy ảnh (camera trap) tại các vườn quốc gia của Việt Nam để mô hình thích nghi tốt hơn với môi trường hoang dã thực tế.
