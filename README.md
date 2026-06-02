@@ -129,7 +129,7 @@ graph TD
 
 ---
 
-## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh Cho Cả 3 Thành Viên
+## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh
 
 Mở Terminal tích hợp trong **VS Code** (Phím tắt `Ctrl + \``) và chạy các lệnh dưới đây tùy theo mục đích công việc của mình:
 
