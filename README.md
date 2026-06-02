@@ -39,17 +39,17 @@ graph TD
     end
 
     %% Định nghĩa màu sắc thẩm mỹ
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-    style D fill:#bbf,stroke:#333,stroke-width:2px
-    style E fill:#f96,stroke:#333,stroke-width:2px
-    style F fill:#f96,stroke:#333,stroke-width:2px
-    style G fill:#55ea82,stroke:#333,stroke-width:3px
-    style H fill:#bbf,stroke:#333,stroke-width:2px
-    style I fill:#fbc531,stroke:#333,stroke-width:2px
-    style J fill:#fbc531,stroke:#333,stroke-width:2px
-    style K fill:#fbc531,stroke:#333,stroke-width:2px
+    style A fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style B fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style C fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style D fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style E fill:#f96,stroke:#333,stroke-width:2px,color:#000
+    style F fill:#f96,stroke:#333,stroke-width:2px,color:#000
+    style G fill:#55ea82,stroke:#333,stroke-width:3px,color:#000
+    style H fill:#bbf,stroke:#333,stroke-width:2px,color:#000
+    style I fill:#fbc531,stroke:#333,stroke-width:2px,color:#000
+    style J fill:#fbc531,stroke:#333,stroke-width:2px,color:#000
+    style K fill:#fbc531,stroke:#333,stroke-width:2px,color:#000
 ```
 
 ---
