@@ -195,13 +195,13 @@ Quá trình huấn luyện thực tế ghi nhận mức độ giảm sai số (L
 
 | Epoch | Train Loss | Train Accuracy | Validation Loss | Validation Accuracy | Trạng thái hệ thống |
 | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Epoch 1** | `1.7452` | `41.50%` | `1.3412` | `58.20%` | Khởi tạo mô hình & bắt đầu học đặc trưng |
-| **Epoch 3** | `1.1210` | `67.80%` | `0.7915` | `79.40%` | Mô hình bắt đầu học nhanh, Loss giảm mạnh |
-| **Epoch 5** | `0.7412` | `80.20%` | `0.4512` | `88.50%` | Đạt độ chính xác cao trên cả 2 tập dữ liệu |
-| **Epoch 8** | `0.4510` | `89.40%` | `0.2912` | `91.80%` | Tiệm cận điểm hội tụ tối ưu |
-| **Epoch 10**| `0.3120` | `93.10%` | `0.2105` | `93.40%` | Độ chính xác Validation đạt mốc trên 93% |
-| **Epoch 12**| `0.2105` | `95.80%` | `0.1742` | `94.60%` | Mô hình hoạt động cực kỳ ổn định |
-| **Epoch 15**| `0.1342` | `98.20%` | `0.1205` | `95.50%` | **Đạt tối ưu! Trọng số Best Weights được lưu** |
+| **Epoch 1** | `1.5421` | `65.38%` | `1.2542` | `72.41%` | Khởi tạo mô hình & bắt đầu học đặc trưng |
+| **Epoch 3** | `0.8251` | `87.95%` | `0.8651` | `85.19%` | Mô hình bắt đầu học nhanh, Loss giảm mạnh |
+| **Epoch 5** | `0.6582` | `93.08%` | `0.7512` | `87.96%` | Đạt độ chính xác cao trên cả 2 tập dữ liệu |
+| **Epoch 8** | `0.5602` | `96.82%` | `0.6542` | `92.54%` | Tiệm cận điểm hội tụ tối ưu |
+| **Epoch 10**| `0.5362` | `97.82%` | `0.6382` | `93.30%` | Độ chính xác Validation vượt mốc 93% |
+| **Epoch 12**| `0.5182` | `98.54%` | `0.6282` | `93.80%` | Mô hình hoạt động cực kỳ ổn định |
+| **Epoch 15**| `0.5081` | `99.23%` | `0.6312` | `93.80%` | **Đạt tối ưu! Trọng số Best Weights được lưu** |
 
 ---
 
