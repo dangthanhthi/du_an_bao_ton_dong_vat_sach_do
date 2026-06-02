@@ -64,7 +64,7 @@ graph TD
   - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng dữ liệu đạt chuẩn 300 ảnh/loài (`canbang.py`).
   - Lập trình giao diện ứng dụng Desktop chuyên nghiệp tích hợp giải thích AI Grad-CAM (`app_desktop.py`) và ứng dụng Web trực tuyến Streamlit (`appnhandien.py`).
   - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
-  - Hỗ trợ thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`train_resnet18_full.py`).
+  - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`tienxulyanh.py`).
 
 ### 2. Lưu Đức Linh
 * **MSSV:** 2001230444
@@ -83,6 +83,7 @@ graph TD
   - Thống kê biểu đồ phân bố và chất lượng tập dữ liệu đầu vào (`phantichdulieu.py`).
   - Tính toán các chỉ số đánh giá chuyên sâu (Loss, Accuracy, Confusion Matrix, ROC-AUC) để chứng minh tính chính xác của mô hình (`phantichthongso.py`).
   - Xây dựng giao diện phụ kiểm thử nhanh bằng Tkinter (`run_video_inference.py`).
+  - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
 
 ---
 
@@ -128,7 +129,7 @@ graph TD
 
 ---
 
-## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh Cho Cả 3 Thành Viên
+## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh
 
 Mở Terminal tích hợp trong **VS Code** (Phím tắt `Ctrl + \``) và chạy các lệnh dưới đây tùy theo mục đích công việc của mình:
 
