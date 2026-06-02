@@ -8,7 +8,7 @@ Dự án này được thiết kế theo dạng **Pipeline khép kín (End-to-En
 
 ## 🗺️ Sơ Đồ Quy Trình Pipeline Hệ Thống (Workflow)
 
-Dưới đây là luồng đi của dữ liệu và các bước phát triển trong dự án. Tất cả 3 thành viên đều có thể nhìn vào sơ đồ này để hiểu cách các file mã nguồn liên kết với nhau:
+Dưới đây là luồng đi của dữ liệu và các bước phát triển trong dự án. Tất cả đều có thể nhìn vào sơ đồ này để hiểu cách các file mã nguồn liên kết với nhau:
 
 ```mermaid
 graph TD
@@ -54,27 +54,31 @@ graph TD
 
 ---
 
-## 👥 Phân Công Nhiệm Vụ & Vai Trò Thành Viên
+## Phân Công Nhiệm Vụ & Vai Trò Thành Viên
 
-### 1. Đặng Thành Thi (Nhóm trưởng - Data Engineer & App Developer)
+### 1. Đặng Thành Thi
 * **MSSV:** 2001230918
 * **Vai trò:** Kỹ sư Dữ liệu & Phát triển Ứng dụng.
 * **Nhiệm vụ:**
   - Thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
   - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng dữ liệu đạt chuẩn 300 ảnh/loài (`canbang.py`).
   - Lập trình giao diện ứng dụng Desktop chuyên nghiệp tích hợp giải thích AI Grad-CAM (`app_desktop.py`) và ứng dụng Web trực tuyến Streamlit (`appnhandien.py`).
+  -Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
+  - Hỗ trợ thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`train_resnet18_full.py`).
 
-### 2. Lưu Đức Linh (Thành viên - AI Researcher & Training Specialist)
+### 2. Lưu Đức Linh
 * **MSSV:** 2001230444
 * **Vai trò:** Nhà nghiên cứu Mô hình AI & Huấn luyện.
 * **Nhiệm vụ:**
+  -Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
   - Thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
   - Thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`train_resnet18_full.py`).
 
-### 3. Trần Xuân Hướng (Thành viên - Data Analyst & Evaluation Specialist)
+### 3. Trần Xuân Hướng
 * **MSSV:** 2001230339
 * **Vai trò:** Kỹ sư Phân tích Dữ liệu & Đánh giá Hiệu năng.
 * **Nhiệm vụ:**
+  -Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
   - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`tienxulyanh.py`).
   - Thống kê biểu đồ phân bố và chất lượng tập dữ liệu đầu vào (`phantichdulieu.py`).
   - Tính toán các chỉ số đánh giá chuyên sâu (Loss, Accuracy, Confusion Matrix, ROC-AUC) để chứng minh tính chính xác của mô hình (`phantichthongso.py`).
@@ -84,7 +88,7 @@ graph TD
 
 ## 📖 Chi Tiết Toàn Bộ Quá Trình Pipeline (5 Giai Đoạn)
 
-Để cả 3 thành viên đều hiểu rõ cách hệ thống vận hành từ đầu đến cuối, dưới đây là mô tả chi tiết của từng giai đoạn:
+ Dưới đây là mô tả chi tiết của từng giai đoạn:
 
 ### Giai Đoạn 1: Chuẩn Bị & Cân Bằng Dữ Liệu (Data Engineering)
 * **Mục tiêu:** Xây dựng tập dữ liệu đồng đều, chất lượng cao để mô hình AI học tốt nhất, tránh hiện tượng lệch lớp (class imbalance) khiến AI chỉ nhận diện tốt một số loài nhất định.
