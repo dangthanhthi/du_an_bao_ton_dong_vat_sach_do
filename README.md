@@ -70,7 +70,7 @@ graph TD
 * **MSSV:** 2001230444
 * **Vai trò:** Nhà nghiên cứu Mô hình AI & Huấn luyện.
 * **Nhiệm vụ:**
-  -Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
+  - Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
   - Thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`resnet18finetuning.py`).
   - Thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`train_resnet18_full.py`).
 
@@ -78,7 +78,7 @@ graph TD
 * **MSSV:** 2001230339
 * **Vai trò:** Kỹ sư Phân tích Dữ liệu & Đánh giá Hiệu năng.
 * **Nhiệm vụ:**
-  -Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
+  - Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`crawl_bing_images.py`).
   - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`tienxulyanh.py`).
   - Thống kê biểu đồ phân bố và chất lượng tập dữ liệu đầu vào (`phantichdulieu.py`).
   - Tính toán các chỉ số đánh giá chuyên sâu (Loss, Accuracy, Confusion Matrix, ROC-AUC) để chứng minh tính chính xác của mô hình (`phantichthongso.py`).
