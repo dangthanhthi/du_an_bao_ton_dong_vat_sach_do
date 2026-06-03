@@ -129,44 +129,53 @@ graph TD
 
 ---
 
-## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh
+## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh (Chạy Luôn Bằng Trọng Số Sẵn Có)
 
-Mở Terminal tích hợp trong **VS Code** (Phím tắt `Ctrl + \``) và chạy các lệnh dưới đây tùy theo mục đích công việc của mình:
+Dự án đã tích hợp sẵn tệp trọng số tối ưu nhất là **`ResNet18_Best_Weights.pth`** trong thư mục gốc. Người dùng tải về có thể khởi chạy ứng dụng để trải nghiệm ngay mà không cần phải thực hiện tiền xử lý hay huấn luyện lại từ đầu.
+
+Mở Terminal tích hợp trong **VS Code** (Phím tắt `Ctrl + \``) và chạy các lệnh dưới đây:
 
 ### Bước 1: Cài đặt toàn bộ thư viện cần thiết
 ```bash
 pip install torch torchvision numpy opencv-python pillow beautifulsoup4 requests customtkinter streamlit openpyxl pandas matplotlib scikit-learn
 ```
 
-### Bước 2: Chạy Tiền xử lý (Chia tập dữ liệu)
+### Bước 2: Khởi chạy ứng dụng mong muốn
+
+* **Lựa chọn A: Khởi chạy Ứng dụng Desktop chính thức (CustomTkinter + Grad-CAM)**
+  ```bash
+  python app_desktop.py
+  ```
+  *(Cho phép tải ảnh/video lên để nhận diện trực quan bản đồ nhiệt Grad-CAM)*
+
+* **Lựa chọn B: Khởi chạy Ứng dụng Web trực tuyến (Streamlit)**
+  ```bash
+  streamlit run appnhandien.py
+  ```
+  *(Giao diện web trực quan, mượt mà trên trình duyệt)*
+
+* **Lựa chọn C: Khởi chạy giao diện phụ video kiểm thử nhanh**
+  ```bash
+  python run_video_inference.py
+  ```
+
+---
+
+## ⚙️ Hướng Dẫn Phát Triển & Huấn Luyện Lại (Tùy Chọn)
+
+Nếu bạn muốn chạy lại toàn bộ quy trình xử lý dữ liệu và huấn luyện mô hình học máy từ đầu (ví dụ: khi bổ sung thêm ảnh mới):
+
+### 1. Chạy Tiền xử lý & Chia tập dữ liệu (Đã sửa lỗi Data Leakage)
 ```bash
 python tienxulyanh.py
 ```
+*(Lệnh này tự động dọn dẹp các ảnh lỗi định dạng, chia tập dữ liệu 7:2:1 gốc độc lập, sau đó tự động chạy augment cân bằng tập Train đạt chuẩn 210 ảnh/loài).*
 
-### Bước 3: Chạy Cân bằng dữ liệu (Nếu cần thêm ảnh tự động)
-```bash
-python canbang.py
-```
-
-### Bước 4: Chạy huấn luyện mô hình (Học từ đầu)
+### 2. Chạy huấn luyện mô hình (Học lại từ đầu)
 ```bash
 python train_resnet18_full.py
 ```
-
-### Bước 5: Khởi chạy Ứng dụng Desktop chính thức (CustomTkinter + Grad-CAM)
-```bash
-python app_desktop.py
-```
-
-### Bước 6: Khởi chạy Ứng dụng Web trực tuyến (Streamlit)
-```bash
-streamlit run appnhandien.py
-```
-
-### Bước 7: Khởi chạy giao diện phụ video kiểm thử nhanh
-```bash
-python run_video_inference.py
-```
+*(Nếu muốn huấn luyện nhanh để kiểm tra mã nguồn, bạn có thể chỉnh siêu tham số `EPOCHS = 2` ở dòng 203 trong file).*
 
 ---
 

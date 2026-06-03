@@ -122,25 +122,34 @@ def plot_multiclass_roc(model, dataloader, class_names, num_classes, device):
 
 # KHOI LENH BAO VE MULTIPROCESSING TREN WINDOWS
 if __name__ == '__main__':
+    # Reconfigure stdout for UTF-8 on Windows terminal
+    import sys
+    if sys.stdout.encoding != 'utf-8':
+        sys.stdout.reconfigure(encoding='utf-8')
+
     print("="*65)
-    print("[*] KHOI DONG HE THONG HUAN LUYEN RESNET-18 (ALL-IN-ONE)")
+    print("[*] KHỞI ĐỘNG HỆ THỐNG HUẤN LUYỆN RESNET-18 (FIX DATA LEAKAGE)")
     print("="*65)
 
-    # 1. THIET LAP DUONG DAN VA CHIA DU LIEU
+    # 1. THIẾT LẬP ĐƯỜNG DẪN VÀ CHẠY TIỀN XỬ LÝ NẾU CHƯA CÓ
     desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
     DATA_DIR = os.path.join(desktop_path, "Endangered_Animals_300_Unique")
     SPLIT_DIR = os.path.join(desktop_path, "Dataset_ResNet18_Ready")
 
-    if not os.path.exists(SPLIT_DIR):
-        print("[*] Dang chia du lieu Train/Val/Test...")
-        splitfolders.ratio(DATA_DIR, output=SPLIT_DIR, seed=42, ratio=(0.7, 0.2, 0.1), group_prefix=None)
+    # Nếu chưa chia dữ liệu hoặc thư mục trống, chạy kịch bản tienxulyanh.py
+    if not os.path.exists(SPLIT_DIR) or not os.listdir(SPLIT_DIR):
+        print("[*] Thư mục dữ liệu chia sẵn không tồn tại. Đang chạy 'tienxulyanh.py' để tiền xử lý và cân bằng tập Train...")
+        import subprocess
+        subprocess.run(["python", "tienxulyanh.py"], check=True)
     
-    # 2. CAU HINH DATALOADER
+    # 2. CẤU HÌNH DATALOADER & BIẾN ĐỔI ẢNH (TRANSFORMS)
     data_transforms = {
         'train': transforms.Compose([
             transforms.Resize(256),
             transforms.RandomResizedCrop(224, scale=(0.8, 1.0)), 
-            transforms.RandomHorizontalFlip(),                   
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(15),                       # Xoay ngẫu nhiên
+            transforms.ColorJitter(brightness=0.2, contrast=0.2), # Đổi màu sắc ngẫu nhiên
             transforms.ToTensor(),                               
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),
@@ -162,6 +171,23 @@ if __name__ == '__main__':
     image_datasets = {x: datasets.ImageFolder(os.path.join(SPLIT_DIR, x), data_transforms[x]) 
                       for x in ['train', 'val', 'test']}
     
+    # Khởi tạo Dataloader
+    # LƯU Ý HỌC THUẬT CHO BÁO CÁO: 
+    # Nếu muốn dùng WeightedRandomSampler cân bằng trực tiếp trong RAM thay vì cân bằng trên đĩa cứng:
+    # --------------------------------------------------------------------------------------
+    # train_dataset = image_datasets['train']
+    # class_counts = [0] * len(train_dataset.classes)
+    # for _, label in train_dataset.samples:
+    #     class_counts[label] += 1
+    # class_weights = 1.0 / np.array(class_counts)
+    # sample_weights = [class_weights[label] for _, label in train_dataset.samples]
+    # sampler = torch.utils.data.WeightedRandomSampler(sample_weights, num_samples=len(sample_weights), replacement=True)
+    #
+    # Khi đó ở dict dataloaders dưới đây, phần 'train' cấu hình như sau:
+    # 'train': DataLoader(image_datasets['train'], batch_size=BATCH_SIZE, sampler=sampler, num_workers=2)
+    # (Bỏ shuffle=True vì shuffle và sampler không thể dùng chung)
+    # --------------------------------------------------------------------------------------
+
     dataloaders = {x: DataLoader(image_datasets[x], batch_size=BATCH_SIZE, shuffle=(x=='train'), num_workers=2) 
                    for x in ['train', 'val', 'test']}
     
@@ -169,9 +195,9 @@ if __name__ == '__main__':
     class_names = image_datasets['train'].classes
     NUM_CLASSES = len(class_names)
 
-    # 3. KHOI TAO MO HINH RESNET-18
+    # 3. KHỞI TẠO MÔ HÌNH RESNET-18
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print(f"[*] Thiet bi huan luyen: {device}")
+    print(f"[*] Thiết bị huấn luyện: {device}")
 
     model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
 
@@ -199,13 +225,13 @@ if __name__ == '__main__':
         {'params': model.fc.parameters(), 'lr': 1e-3}
     ], weight_decay=1e-4)
 
-    # 4. THUC THI HUAN LUYEN
+    # 4. THỰC THI HUẤN LUYỆN
     EPOCHS = 15
-    print("\n[*] BAT DAU HUAN LUYEN...")
+    print("\n[*] BẮT ĐẦU HUAN LUYEN...")
     best_model, metrics_history = train_model(model, criterion, optimizer, dataloaders, dataset_sizes, device, num_epochs=EPOCHS)
 
     torch.save(best_model.state_dict(), 'ResNet18_Best_Weights.pth')
-    print("[*] Da luu mo hinh vao file 'ResNet18_Best_Weights.pth'")
+    print("[*] Đã lưu mô hình tốt nhất vào file 'ResNet18_Best_Weights.pth'")
 
     # 5. VE BIEU DO
     print("[*] Dang xuat bieu do Accuracy va Loss...")
