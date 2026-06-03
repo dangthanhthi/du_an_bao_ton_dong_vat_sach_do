@@ -1,2 +1,10 @@
 # Ignore the private template document
 HCSDL (1).docx
+
+# Ignore local test dataset folder
+test/
+
+# Ignore python caches and temp script outputs
+*.log
+__pycache__/
+.ipynb_checkpoints/

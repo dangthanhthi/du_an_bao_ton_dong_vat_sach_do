@@ -37,39 +37,40 @@
 
 \begin{document}
 
-% --- KHUNG BÌA TRANG TRỌNG ---
+% --- KHUNG BÌA ĐÃ ĐƯỢC CĂN CHỈNH ĐỐI XỨNG & CHỐNG TRÀN CHỮ ---
 \begin{titlepage}
 \begin{tikzpicture}[remember picture, overlay]
-    \draw[line width = 3pt] ($(current page.north west) + (3cm,-2cm)$) rectangle ($(current page.south east) + (-1.5cm,2cm)$);
-    \draw[line width = 1pt] ($(current page.north west) + (2.85cm,-2.15cm)$) rectangle ($(current page.south east) + (-1.65cm,2.15cm)$);
+    % Vẽ khung đôi đối xứng hoàn hảo với lề lề trái 3cm, lề phải 2cm
+    \draw[line width = 3pt] ($(current page.north west) + (2.5cm,-2cm)$) rectangle ($(current page.south east) + (-1.5cm,2cm)$);
+    \draw[line width = 1pt] ($(current page.north west) + (2.65cm,-2.15cm)$) rectangle ($(current page.south east) + (-1.65cm,2.15cm)$);
 \end{tikzpicture}
 
 \begin{center}
     \large BỘ CÔNG THƯƠNG \\
     \large \textbf{TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH} \\
     \large \textbf{KHOA CÔNG NGHỆ THÔNG TIN} \\
-    \vfill
+    \vspace{0.5cm}
     
-    \Large \textbf{BÁO CÁO CUỐI KỲ HỌC PHẦN} \\
+    % Chèn logo trường HUIT đã được trích xuất
+    \includegraphics[width=4cm]{logo_huit.png} \\
+    \vspace{0.5cm}
+    
+    \Large BÁO CÁO CUỐI KỲ HỌC PHẦN \\
     \Huge \textbf{DEEP LEARNING} \\
-    \vfill
+    \vspace{1.0cm}
     
-    \begin{minipage}{0.8\textwidth}
-    \centering
     \Large \textbf{ĐỀ TÀI:}\\
-    \Large \textbf{XÂY DỰNG HỆ THỐNG NHẬN DIỆN 9 LOÀI ĐỘNG VẬT SÁCH ĐỎ VIỆT NAM DỰA TRÊN KIẾN TRÚC RESNET-18 TRANSFER LEARNING TÍCH HỢP GIẢI THÍCH MÔ HÌNH GRAD-CAM}
-    \end{minipage}
-    
-    \vfill
+    \Large \textbf{XÂY DỰNG HỆ THỐNG NHẬN DIỆN 9 LOÀI ĐỘNG VẬT SÁCH ĐỎ VIỆT NAM DỰA TRÊN KIẾN TRÚC RESNET-18 TRANSFER LEARNING TÍCH HỢP GIẢI THÍCH MÔ HÌNH GRAD-CAM} \\
+    \vspace{1.8cm}
     
     \begin{flushleft}
-    \large \textbf{NHÓM THỰC HIỆN:} \\
-    \large 1. Đặng Thành Thi (Nhóm trưởng) - MSSV: 2001230918 \\
-    \large 2. Lưu Đức Linh (Thành viên) - MSSV: 2001230444 \\
-    \large 3. Trần Xuân Hướng (Thành viên) - MSSV: 2001230339 \\
+    \hspace{1.5cm} \large \textbf{NHÓM THỰC HIỆN:} \\
+    \hspace{1.5cm} \large 1. Đặng Thành Thi (Nhóm trưởng) - MSSV: 2001230918 \\
+    \hspace{1.5cm} \large 2. Lưu Đức Linh (Thành viên) - MSSV: 2001230444 \\
+    \hspace{1.5cm} \large 3. Trần Xuân Hướng (Thành viên) - MSSV: 2001230339 \\
     \end{flushleft}
     
-    \vfill
+    \vspace{1.2cm}
     \large \textbf{TP. HỒ CHÍ MINH, THÁNG 06 NĂM 2026}
 \end{center}
 \end{titlepage}
@@ -96,56 +97,48 @@ Sự bùng nổ của trí tuệ nhân tạo (AI), đặc biệt là lĩnh vực
 \chapter{Giới thiệu đề tài}
 
 \section{Bối cảnh và động cơ thực hiện}
-Việt Nam là một trong những quốc gia có đa dạng sinh học phong phú bậc nhất Đông Nam Á, tuy nhiên cũng là điểm nóng về nguy cơ tuyệt chủng của nhiều loài động vật đặc hữu như Vọoc Chà Vá, Gấu Ngựa, Tê Tê Java... Sự phát triển mạnh mẽ của khoa học máy tính đã mang lại cơ hội áp dụng công nghệ số vào bảo tồn sinh thái. Các nghiên cứu Deep Learning trước đây thường tập trung vào các bài toán kinh điển như nhận diện khuôn mặt hoặc biển số xe. Việc thiếu các hệ thống nhận diện động vật quý hiếm chuyên biệt cho khu vực rừng nhiệt đới Việt Nam là động cơ to lớn để nhóm thực hiện đề tài này.
+Việt Nam là một trong những quốc gia có đa dạng sinh học phong phú bậc nhất Đông Nam Á, tuy nhiên cũng là điểm nóng về nguy cơ tuyệt chủng của nhiều loài động vật đặc hữu như Vọoc Chà Vá, Gấu Ngựa, Tê Tê Java... Sự phát triển mạnh mẽ của khoa học máy tính đã mang lại cơ hội áp dụng công nghệ số vào bảo tồn sinh thái. Các nghiên cứu Deep Learning trước đây thường tập trung vào các bài toán kinhдениên như nhận diện khuôn mặt hoặc biển số xe. Việc thiếu các hệ thống nhận diện động vật quý hiếm chuyên biệt cho khu vực rừng nhiệt đới Việt Nam là động cơ to lớn để nhóm thực hiện đề tài này.
 
 Đề tài hướng tới việc xây dựng một pipeline khép kín, từ việc chuẩn bị dữ liệu đồng đều, huấn luyện mô hình sâu cho đến thiết lập các giao diện trực quan hỗ trợ người dùng cuối. Điều này giúp nâng cao nhận thức cộng đồng và hỗ trợ các kiểm lâm viên trong công tác tuần tra, bảo vệ rừng rậm nhiệt đới.
 
 \section{Nhu cầu thực tiễn và bài toán cần giải quyết}
-Bài toán đặt ra cho hệ thống bao gồm:
-\begin{itemize}
-    \item \textbf{Sự lệch lớp dữ liệu (Class Imbalance):} Số lượng ảnh của các loài trong tự nhiên rất khan hiếm và không đồng đều. AI cần một tập dữ liệu cân bằng để tránh dự đoán thiên lệch.
-    \item \textbf{Tính minh bạch của AI (Explainable AI):} Các mô hình học sâu thường bị coi là "hộp đen" (black box) vì người dùng không biết AI dựa vào đâu để đưa ra dự đoán. Cần tích hợp cơ chế giải thích trực quan để người dùng tin tưởng kết quả.
-    \item \textbf{Nhận diện nhầm lẫn (Out-of-distribution detection):} Cần có bộ lọc để ngăn việc AI nhận diện sai các động vật thông thường hoặc loài lạ thành động vật Sách Đỏ.
-\end{itemize}
+Bài toán đặt ra cho hệ thống bao gồm:\\
+
+\noindent - \textbf{Sự lệch lớp dữ liệu (Class Imbalance):} Số lượng ảnh của các loài trong tự nhiên rất khan hiếm và không đồng đều. AI cần một tập dữ liệu cân bằng để tránh dự đoán thiên lệch.\\[0.15cm]
+\noindent - \textbf{Tính minh bạch của AI (Explainable AI):} Các mô hình học sâu thường bị coi là "hộp đen" (black box) vì người dùng không biết AI dựa vào đâu để đưa ra dự đoán. Cần tích hợp cơ chế giải thích trực quan để người dùng tin tưởng kết quả.\\[0.15cm]
+\noindent - \textbf{Nhận diện nhầm lẫn (Out-of-distribution detection):} Cần có bộ lọc để ngăn việc AI nhận diện sai các động vật thông thường hoặc loài lạ thành động vật Sách Đỏ.
 
 \section{Mục tiêu nghiên cứu}
-Mục tiêu tổng quát là xây dựng một mô hình nhận diện chính xác 9 loài động vật nguy cấp dựa trên ResNet-18 và phát triển ứng dụng giao diện.
-Các mục tiêu cụ thể gồm:
-\begin{enumerate}
-    \item Đạt mốc 300 ảnh chuẩn hóa cho mỗi loài thông qua Image Augmentation.
-    \item Đóng băng/rã đông hợp lý các layer ResNet-18 để huấn luyện đạt độ chính xác tập validation >93\%.
-    \item Tích hợp Grad-CAM để biểu diễn heatmap chú ý của mô hình AI.
-    \item Phát triển ứng dụng Desktop bằng CustomTkinter và ứng dụng Web trực tuyến bằng Streamlit.
-\end{enumerate}
+Mục tiêu tổng quát là xây dựng một mô hình nhận diện chính xác 9 loài động vật nguy cấp dựa trên ResNet-18 và phát triển ứng dụng giao diện. Các mục tiêu cụ thể gồm:\\
+
+\noindent 1. \textbf{Đạt mốc 300 ảnh chuẩn hóa} cho mỗi loài thông qua Image Augmentation.\\[0.15cm]
+\noindent 2. \textbf{Đóng băng/rã đông hợp lý các layer ResNet-18} để huấn luyện đạt độ chính xác tập validation $>$93\%.\\[0.15cm]
+\noindent 3. \textbf{Tích hợp Grad-CAM} để biểu diễn heatmap chú ý của mô hình AI.\\[0.15cm]
+\noindent 4. \textbf{Phát triển ứng dụng Desktop} bằng CustomTkinter và ứng dụng Web trực tuyến bằng Streamlit.
 
 \section{Phạm vi và giới hạn đề tài}
-\begin{itemize}
-    \item \textbf{Phạm vi:} Nhận diện 9 loài đặc trưng gồm: Báo Gấm, Cu Li Nhỏ, Gấu Ngựa, Hổ Đông Dương, Hươu Sao, Tê Tê Java, Voi Châu Á, Voọc Chà Vá, Vượn Má Vàng.
-    \item \textbf{Giới hạn:} Hệ thống nhận diện từ ảnh hoặc video tĩnh tĩnh/tải lên, chưa hỗ trợ luồng camera giám sát thời gian thực trên quy mô lớn của rừng quốc gia.
-\end{itemize}
+\noindent - \textbf{Phạm vi:} Nhận diện 9 loài đặc trưng gồm: Báo Gấm, Cu Li Nhỏ, Gấu Ngựa, Hổ Đông Dương, Hươu Sao, Tê Tê Java, Voi Châu Á, Voọc Chà Vá, Vượn Má Vàng.\\[0.15cm]
+\noindent - \textbf{Giới hạn:} Hệ thống nhận diện từ ảnh hoặc video tĩnh/tải lên, chưa hỗ trợ luồng camera giám sát thời gian thực trên quy mô lớn của rừng quốc gia.
 
 \section{Công nghệ và ngôn ngữ lập trình chính}
-\begin{itemize}
-    \item \textbf{Ngôn ngữ:} Python 3.10+ (Đọc, ghi, huấn luyện và phát triển ứng dụng).
-    \item \textbf{Thư viện AI:} PyTorch & TorchVision (Định nghĩa mạng, tối ưu hóa và suy luận).
-    \item \textbf{Giao diện:} CustomTkinter (Desktop GUI) & Streamlit (Web App).
-    \item \textbf{Xử lý ảnh:} OpenCV & Pillow (Tiền xử lý ảnh, trích xuất khung hình video).
-\end{itemize}
+\noindent - \textbf{Ngôn ngữ:} Python 3.10+ (Đọc, ghi, huấn luyện và phát triển ứng dụng).\\[0.15cm]
+\noindent - \textbf{Thư viện AI:} PyTorch \& TorchVision (Định nghĩa mạng, tối ưu hóa và suy luận).\\[0.15cm]
+\noindent - \textbf{Giao diện:} CustomTkinter (Desktop GUI) \& Streamlit (Web App).\\[0.15cm]
+\noindent - \textbf{Xử lý ảnh:} OpenCV \& Pillow (Tiền xử lý ảnh, trích xuất khung hình video).
 \newpage
 
 % --- CHƯƠNG 2 ---
 \chapter{Kiến trúc hệ thống và Các phân hệ chính}
 
 \section{Sơ đồ luồng hoạt động hệ thống (System Pipeline)}
-Hệ thống vận hành theo một quy trình tuần tự chặt chẽ:
-\begin{enumerate}
-    \item \textbf{Thu thập dữ liệu thô:} Script cào ảnh tự động từ Bing.
-    \item \textbf{Tăng cường dữ liệu:} Áp dụng lật, xoay ảnh ngẫu nhiên để cân bằng lớp dữ liệu.
-    \item \textbf{Tiền xử lý ảnh:} Resize ảnh về $224 \times 224$ và chuẩn hóa theo chuẩn ImageNet.
-    \item \textbf{Huấn luyện mô hình:} Thực hiện quá trình Fine-tuning mô hình ResNet-18.
-    \item \textbf{Đánh giá và Kiểm thử:} Tính toán các chỉ số và vẽ ROC-AUC.
-    \item \textbf{Triển khai:} Ứng dụng Desktop & Web sử dụng tệp trọng số lưu trữ.
-\end{enumerate}
+Hệ thống vận hành theo một quy trình tuần tự chặt chẽ:\\
+
+\noindent 1. \textbf{Thu thập dữ liệu thô:} Script cào ảnh tự động từ Bing.\\[0.15cm]
+\noindent 2. \textbf{Tăng cường dữ liệu:} Áp dụng lật, xoay ảnh ngẫu nhiên để cân bằng lớp dữ liệu.\\[0.15cm]
+\noindent 3. \textbf{Tiền xử lý ảnh:} Resize ảnh về $224 \times 224$ và chuẩn hóa theo chuẩn ImageNet.\\[0.15cm]
+\noindent 4. \textbf{Huấn luyện mô hình:} Thực hiện quá trình Fine-tuning mô hình ResNet-18.\\[0.15cm]
+\noindent 5. \textbf{Đánh giá và Kiểm thử:} Tính toán các chỉ số và vẽ ROC-AUC.\\[0.15cm]
+\noindent 6. \textbf{Triển khai:} Ứng dụng Desktop \& Web sử dụng tệp trọng số lưu trữ.
 
 \section{Phân hệ Kỹ thuật Dữ liệu (Data Pipeline)}
 Đảm nhận vai trò thu thập và làm sạch dữ liệu đầu vào. File `crawl_bing_images.py` cào ảnh tự động theo từ khóa loài. File `canbang.py` kiểm tra số lượng ảnh hiện tại và tự động sinh thêm các ảnh biến thể để đảm bảo phân phối cân bằng lý tưởng của tập dữ liệu.
@@ -154,11 +147,10 @@ Hệ thống vận hành theo một quy trình tuần tự chặt chẽ:
 Thực hiện quá trình tối ưu hóa trọng số của mô hình. File `resnet18finetuning.py` định nghĩa cấu trúc mạng nơ-ron học sâu. File `train_resnet18_full.py` chạy vòng lặp huấn luyện, tính toán mất mát, cập nhật gradient ngược và lưu lại trọng số tối ưu nhất (`ResNet18_Best_Weights.pth`).
 
 \section{Phân hệ Phát triển Ứng dụng (App Deployment Pipeline)}
-Đưa mô hình AI vào thực tế thông qua các ứng dụng tương tác trực quan:
-\begin{itemize}
-    \item `app_desktop.py` tích hợp giao diện tối sang trọng bằng CustomTkinter, hiển thị kết quả phân tích song song với bản đồ nhiệt Grad-CAM chỉ ra vùng đặc trưng giúp AI phân loại vật thể.
-    \item `appnhandien.py` cung cấp giải pháp đám mây tối giản bằng Streamlit giúp nhận diện hình ảnh và video nhanh chóng trên web.
-\end{itemize}
+Đưa mô hình AI vào thực tế thông qua các ứng dụng tương tác trực quan:\\
+
+\noindent - **`app_desktop.py`** tích hợp giao diện tối sang trọng bằng CustomTkinter, hiển thị kết quả phân tích song song với bản đồ nhiệt Grad-CAM chỉ ra vùng đặc trưng giúp AI phân loại vật thể.\\[0.15cm]
+\noindent - **`appnhandien.py`** cung cấp giải pháp đám mây tối giản bằng Streamlit giúp nhận diện hình ảnh và video nhanh chóng trên web.
 \newpage
 
 % --- CHƯƠNG 3 ---
@@ -168,40 +160,36 @@ Thực hiện quá trình tối ưu hóa trọng số của mô hình. File `res
 Tập dữ liệu bao gồm 9 thư mục con tương ứng với 9 loài động vật quý hiếm cần bảo tồn. Sau quá trình chuẩn bị dữ liệu nghiêm ngặt, mỗi thư mục loài chứa chính xác 300 hình ảnh chất lượng cao định dạng JPG/PNG, tổng cộng tập dữ liệu có 2.700 hình ảnh.
 
 \section{Kỹ thuật Augmentation và Cân bằng lớp dữ liệu}
-Để tránh tình trạng mô hình bị Overfitting và đạt độ khái quát hóa cao, các phép biến đổi hình ảnh được áp dụng ngẫu nhiên trong quá trình cân bằng dữ liệu đầu vào gồm:
-\begin{itemize}
-    \item Lật ảnh nằm ngang ngẫu nhiên (Random Horizontal Flip) với xác suất $p=1.0$ để nhân đôi hướng nhìn của động vật.
-    \item Xoay ảnh ngẫu nhiên (Random Rotation) trong khoảng từ $-15^\circ$ đến $15^\circ$.
-    \item Biến đổi độ sáng (Brightness) và độ tương phản (Contrast) ngẫu nhiên bằng bộ lọc Color Jitter với biên độ biến thiên $15\%$.
-\end{itemize}
+Để tránh tình trạng mô hình bị Overfitting và đạt độ khái quát hóa cao, các phép biến đổi hình ảnh được áp dụng ngẫu nhiên trong quá trình cân bằng dữ liệu đầu vào gồm:\\
+
+\noindent - Lật ảnh nằm ngang ngẫu nhiên (Random Horizontal Flip) với xác suất $p=1.0$ để nhân đôi hướng nhìn của động vật.\\[0.15cm]
+\noindent - Xoay ảnh ngẫu nhiên (Random Rotation) trong khoảng từ $-15^\circ$ đến $15^\circ$.\\[0.15cm]
+\noindent - Biến đổi độ sáng (Brightness) và độ tương phản (Contrast) ngẫu nhiên bằng bộ lọc Color Jitter với biên độ biến thiên $15\%$.
 
 \section{Phân chia tập dữ liệu huấn luyện khoa học}
-Tập dữ liệu được phân chia độc lập theo tỷ lệ chuẩn nghiên cứu học sâu $7:2:1$ thông qua script `tienxulyanh.py`:
-\begin{itemize}
-    \item \textbf{Tập Huấn luyện (Train Set - 70\%):} Gồm 1.890 ảnh dùng để tối ưu hóa trọng số mô hình.
-    \item \textbf{Tập Kiểm thử Tinh chỉnh (Validation Set - 20\%):} Gồm 540 ảnh dùng để kiểm duyệt lỗi và chọn ra epoch tốt nhất để lưu mô hình.
-    \item \textbf{Tập Kiểm thử Độc lập (Test Set - 10\%):} Gồm 270 ảnh hoàn toàn tách biệt dùng để đánh giá năng lực suy luận cuối cùng của AI.
-\end{itemize}
+Tập dữ liệu được phân chia độc lập theo tỷ lệ chuẩn nghiên cứu học sâu $7:2:1$ thông qua script `tienxulyanh.py`:\\
+
+\noindent - \textbf{Tập Huấn luyện (Train Set - 70\%):} Gồm 1.890 ảnh dùng để tối ưu hóa trọng số mô hình.\\[0.15cm]
+\noindent - \textbf{Tập Kiểm thử Tinh chỉnh (Validation Set - 20\%):} Gồm 540 ảnh dùng để kiểm duyệt lỗi và chọn ra epoch tốt nhất để lưu mô hình.\\[0.15cm]
+\noindent - \textbf{Tập Kiểm thử Độc lập (Test Set - 10\%):} Gồm 270 ảnh hoàn toàn tách biệt dùng để đánh giá năng lực suy luận cuối cùng của AI.
 \newpage
 
 % --- CHƯƠNG 4 ---
 \chapter{Thiết kế giao diện & Trực quan hóa mô hình AI}
 
 \section{Thiết kế ứng dụng Desktop chuyên nghiệp (CustomTkinter)}
-Giao diện Desktop ứng dụng phong cách Modern Dark Mode với bố cục chia thành ba cột trực quan:
-\begin{enumerate}
-    \item \textbf{Thanh điều khiển (Sidebar):} Chứa các nút bấm mở ảnh, mở video và menu tùy chọn cấu hình hệ thống.
-    \item \textbf{Khung hiển thị chính (Center Panel):} Hiển thị hình ảnh hoặc video đầu vào với kích thước lớn sắc nét.
-    \item \textbf{Khung phân tích AI (Right Panel):} Chứa vùng hiển thị biểu đồ nhiệt Grad-CAM, thanh trạng thái hiển thị top 3 xác suất phân loại và hồ sơ giới thiệu trạng thái nguy cấp của động vật truy vấn động từ Sách Đỏ.
-\end{enumerate}
+Giao diện Desktop ứng dụng phong cách Modern Dark Mode với bố cục chia thành ba cột trực quan:\\
+
+\noindent 1. \textbf{Thanh điều khiển (Sidebar):} Chứa các nút bấm mở ảnh, mở video và menu tùy chọn cấu hình hệ thống.\\[0.15cm]
+\noindent 2. \textbf{Khung hiển thị chính (Center Panel):} Hiển thị hình ảnh hoặc video đầu vào với kích thước lớn sắc nét.\\[0.15cm]
+\noindent 3. \textbf{Khung phân tích AI (Right Panel):} Chứa vùng hiển thị biểu đồ nhiệt Grad-CAM, thanh trạng thái hiển thị top 3 xác suất phân loại và hồ sơ giới thiệu trạng thái nguy cấp của động vật truy vấn động từ Sách Đỏ.
 
 \section{Nguyên lý trực quan hóa Explainable AI (Grad-CAM)}
-Cơ chế **Grad-CAM (Gradient-weighted Class Activation Mapping)** cho phép trực quan hóa vùng mô hình tập trung chú ý:
-\begin{itemize}
-    \item Hệ thống trích xuất bản đồ kích hoạt (feature maps) từ lớp tích chập cuối cùng của ResNet-18 (nơi chứa các thông tin không gian phong phú nhất).
-    \item Tính đạo hàm ngược của điểm số dự đoán của lớp mục tiêu đối với bản đồ kích hoạt để xác định trọng số tầm quan trọng của mỗi kênh đặc trưng.
-    \item Thực hiện phép nhân tổ hợp tuyến tính giữa bản đồ kích hoạt và các trọng số, đi qua hàm chỉnh lưu ReLU để tạo heatmap. Heatmap được nội suy kích thước bằng PIL và đè lên ảnh gốc với độ trong suốt $40\%$ bằng thuật toán OpenCV, hiển thị vùng trọng tâm màu đỏ ấm (AI tập trung nhất) và màu xanh mát (vùng AI bỏ qua).
-\end{itemize}
+Cơ chế **Grad-CAM (Gradient-weighted Class Activation Mapping)** cho phép trực quan hóa vùng mô hình tập trung chú ý:\\
+
+\noindent - Hệ thống trích xuất bản đồ kích hoạt (feature maps) từ lớp tích chập cuối cùng của ResNet-18 (nơi chứa các thông tin không gian phong phú nhất).\\[0.15cm]
+\noindent - Tính đạo hàm ngược của điểm số dự đoán của lớp mục tiêu đối với bản đồ kích hoạt để xác định trọng số tầm quan trọng của mỗi kênh đặc trưng.\\[0.15cm]
+\noindent - Thực hiện phép nhân tổ hợp tuyến tính giữa bản đồ kích hoạt và các trọng số, đi qua hàm chỉnh lưu ReLU để tạo heatmap. Heatmap được nội suy kích thước bằng PIL và đè lên ảnh gốc với độ trong suốt $40\%$ bằng thuật toán OpenCV, hiển thị vùng trọng tâm màu đỏ ấm (AI tập trung nhất) và màu xanh mát (vùng AI bỏ qua).
 
 \section{Thiết kế ứng dụng Web trực tuyến (Streamlit Web App)}
 Ứng dụng web được tối ưu hóa giao diện phẳng, hiển thị biểu đồ xác suất bằng thanh tiến trình động. Người dùng có thể kéo thả tệp ảnh hoặc video từ máy cá nhân lên đám mây cục bộ để hệ thống tự động xử lý suy luận theo thời gian thực và trích xuất các khoảnh khắc phát hiện động vật thành lưới ảnh trực quan.
@@ -232,12 +220,11 @@ L_{CE} = -\sum_{i=1}^{C} q_i \log(p_i) \quad \text{với} \quad q_i = (1 - \alph
 \end{equation}
 
 \section{Phân tích kết quả thực nghiệm và các biểu đồ hiệu năng}
-Quá trình huấn luyện thực nghiệm ghi nhận tiến trình tối ưu tuyệt vời của mô hình:
-\begin{itemize}
-    \item \textbf{Độ hội tụ lý tưởng:} Train Accuracy đạt mốc cao nhất **$99.23\%$** và Validation Accuracy đạt **$93.80\%$** tại Epoch thứ 15.
-    \item \textbf{Tính nhất quán dữ liệu:} Bảng sai số huấn luyện giảm đều đặn từ $1.5421$ về $0.5081$ và được trực quan hóa đồng bộ trong biểu đồ `Loss_Accuracy_Curves.png`.
-    \item \textbf{Khả năng phân loại độc lập:} Biểu đồ `ROC_AUC_Curve.png` chỉ ra chỉ số **AUC trung bình đạt $0.99$**, khẳng định năng lực phân biệt cực tốt của mô hình đối với tất cả 9 loài động vật hoang dã.
-\end{itemize}
+Quá trình huấn luyện thực nghiệm ghi nhận tiến trình tối ưu tuyệt vời của mô hình:\\
+
+\noindent - \textbf{Độ hội tụ lý tưởng:} Train Accuracy đạt mốc cao nhất **$99.23\%$** và Validation Accuracy đạt **$93.80\%$** tại Epoch thứ 15.\\[0.15cm]
+\noindent - \textbf{Tính nhất quán dữ liệu:} Bảng sai số huấn luyện giảm đều đặn từ $1.5421$ về $0.5081$ và được trực quan hóa đồng bộ trong biểu đồ `Loss_Accuracy_Curves.png`.\\[0.15cm]
+\noindent - \textbf{Khả năng phân loại độc lập:} Biểu đồ `ROC_AUC_Curve.png` chỉ ra chỉ số **AUC trung bình đạt $0.99$**, khẳng định năng lực phân biệt cực tốt của mô hình đối với tất cả 9 loài động vật hoang dã.
 \newpage
 
 % --- LỜI KẾT ---
@@ -247,11 +234,10 @@ Quá trình huấn luyện thực nghiệm ghi nhận tiến trình tối ưu tu
 
 Ứng dụng Desktop bằng CustomTkinter và Web App bằng Streamlit đã hoạt động ổn định, cung cấp giao diện tương tác hiện đại và mang lại trải nghiệm người dùng tối ưu. Việc tích hợp cơ chế giải thích mô hình Grad-CAM giúp gia tăng tính minh bạch, biến mô hình AI từ một "hộp đen" trở thành một công cụ phân tích có độ tin cậy cao về mặt khoa học.
 
-\textbf{Hướng phát triển tương lai:}
-Trong các giai đoạn tiếp theo, nhóm định hướng mở rộng nghiên cứu sang hai phương diện chính:
-\begin{enumerate}
-    \item Nâng cấp mô hình từ Phân loại ảnh sang **Phát hiện vật thể (Object Detection)** bằng kiến trúc YOLOv8 để khoanh vùng chính xác tọa độ của động vật trong các luồng video phức tạp có nhiều nhiễu động.
-    \item Thử nghiệm triển khai các mô hình siêu nhẹ như MobileNetV3 hoặc EdgeYOLO lên các thiết bị phần cứng nhúng (như Raspberry Pi hoặc Jetson Nano) phục vụ trực tiếp cho các trạm bẫy ảnh tự động giám sát rừng sâu dài ngày.
-\end{enumerate}
+\textbf{Hướng phát triển tương lai:}\\
+Trong các giai đoạn tiếp theo, nhóm định hướng mở rộng nghiên cứu sang hai phương diện chính:\\
+
+\noindent 1. Nâng cấp mô hình từ Phân loại ảnh sang **Phát hiện vật thể (Object Detection)** bằng kiến trúc YOLOv8 để khoanh vùng chính xác tọa độ của động vật trong các luồng video phức tạp có nhiều nhiễu động.\\[0.15cm]
+\noindent 2. Thử nghiệm triển khai các mô hình siêu nhẹ như MobileNetV3 hoặc EdgeYOLO lên các thiết bị phần cứng nhúng (như Raspberry Pi hoặc Jetson Nano) phục vụ trực tiếp cho các trạm bẫy ảnh tự động giám sát rừng sâu dài ngày.
 
 \end{document}

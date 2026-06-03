@@ -57,12 +57,40 @@ data_transform = transforms.Compose([
 ])
 
 def predict_image(image, model, device):
-    img_tensor = data_transform(image).unsqueeze(0).to(device)
+    # 1. Ảnh gốc
+    img_tensor1 = data_transform(image).unsqueeze(0).to(device)
+    
+    # 2. Ảnh lật ngang (TTA)
+    flipped_img = image.transpose(Image.FLIP_LEFT_RIGHT)
+    img_tensor2 = data_transform(flipped_img).unsqueeze(0).to(device)
+    
+    # 3. Ảnh làm mịn song phương (Bilateral Filter - loại bỏ lồng lưới sắt)
+    img_np = np.array(image)
+    if len(img_np.shape) == 3 and img_np.shape[2] == 3:
+        bgr = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
+        blurred = cv2.bilateralFilter(bgr, 9, 75, 75)
+        rgb_blurred = cv2.cvtColor(blurred, cv2.COLOR_BGR2RGB)
+        pil_img_blurred = Image.fromarray(rgb_blurred)
+    else:
+        pil_img_blurred = image
+    img_tensor3 = data_transform(pil_img_blurred).unsqueeze(0).to(device)
+    
     with torch.no_grad():
-        outputs = model(img_tensor)
-        probs = torch.nn.functional.softmax(outputs, dim=1)
-        confidence, preds = torch.max(probs, 1)
-    return CLASS_NAMES[preds[0]], confidence.item()
+        out1 = model(img_tensor1)
+        probs1 = torch.nn.functional.softmax(out1, dim=1)[0]
+        
+        out2 = model(img_tensor2)
+        probs2 = torch.nn.functional.softmax(out2, dim=1)[0]
+        
+        out3 = model(img_tensor3)
+        probs3 = torch.nn.functional.softmax(out3, dim=1)[0]
+        
+        # Cộng trung bình xác suất TTA
+        probs = (probs1 + probs2 + probs3) / 3.0
+        confidence, preds = torch.max(probs.unsqueeze(0), 1)
+        
+    return CLASS_NAMES[preds[0].item()], confidence.item()
+
 
 # 4. GIAO DIEN TUONG TAC
 if model_data[0] is not None:

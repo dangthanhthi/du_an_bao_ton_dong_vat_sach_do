@@ -4,11 +4,10 @@ import cv2
 import torch
 import torch.nn as nn
 from torchvision import models, transforms
-from PIL import Image, ImageTk, ImageFile, ImageDraw, ImageFont
+from PIL import Image, ImageTk, ImageFile
 import os
 import customtkinter as ctk
 import numpy as np
-from datetime import datetime
 import time
 
 # Hỗ trợ đọc ảnh bị lỗi cấu trúc
@@ -59,7 +58,10 @@ class GradCAMModel(nn.Module):
     def get_activations(self, x):
         return self.features(x)
 
+weights_loaded = False
+
 def load_full_model():
+    global weights_loaded
     base_model = models.resnet18(weights=None)
     base_model.fc = nn.Sequential(
         nn.Linear(base_model.fc.in_features, 256),
@@ -71,29 +73,55 @@ def load_full_model():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     weights_path = os.path.join(base_dir, 'ResNet18_Best_Weights.pth')
     if os.path.exists(weights_path):
-        base_model.load_state_dict(torch.load(weights_path, map_location=device))
+        try:
+            base_model.load_state_dict(torch.load(weights_path, map_location=device))
+            weights_loaded = True
+            print(f"[*] Loaded model weights successfully from {weights_path}")
+        except Exception as e:
+            print(f"[!] Error loading model weights: {e}")
+    else:
+        print(f"[!] Weights file NOT found at {weights_path}!")
     base_model.eval()
     return base_model.to(device)
 
 raw_model = load_full_model()
 cam_model = GradCAMModel(raw_model)
 
+# Tiền xử lý khớp hoàn toàn với cấu hình lúc validation khi training (Resize 256 + CenterCrop 224)
+# Việc này giữ nguyên tỷ lệ ảnh gốc, tránh bị co giãn méo mó con vật làm sụt giảm độ tự tin nhận diện.
 data_transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
 def get_prediction_and_cam(pil_img):
-    img_tensor = data_transform(pil_img).unsqueeze(0).to(device)
-    out = cam_model(img_tensor)
-    probs = torch.nn.functional.softmax(out, dim=1)[0]
+    # 1. Ảnh gốc
+    img_tensor1 = data_transform(pil_img).unsqueeze(0).to(device)
+    out1 = cam_model(img_tensor1)
+    probs1 = torch.nn.functional.softmax(out1, dim=1)[0]
+    
+    # 2. Ảnh lật ngang (Tăng cường dữ liệu thời gian kiểm thử - TTA)
+    flipped_img = pil_img.transpose(Image.FLIP_LEFT_RIGHT)
+    img_tensor2 = data_transform(flipped_img).unsqueeze(0).to(device)
+    with torch.no_grad():
+        out2 = raw_model(img_tensor2)
+        probs2 = torch.nn.functional.softmax(out2, dim=1)[0]
+        
+    # Cộng trung bình xác suất TTA giúp kết quả ổn định cực kỳ tốt, loại bỏ bilateral filter gây giảm độ chính xác và giật lag CPU
+    probs = (probs1 + probs2) / 2.0
+    
     top3_prob, top3_idx = torch.topk(probs, 3)
     class_idx = top3_idx[0].item()
-    out[:, class_idx].backward()
+    
+    # Backward trên out1 (ảnh gốc) để Grad-CAM tập trung đúng vùng ảnh hiển thị
+    cam_model.zero_grad()
+    out1[:, class_idx].backward()
+    
     gradients = cam_model.get_activations_gradient()
     pooled_gradients = torch.mean(gradients, dim=[0, 2, 3])
-    activations = cam_model.get_activations(img_tensor).detach()
+    activations = cam_model.get_activations(img_tensor1).detach()
     for i in range(512):
         activations[:, i, :, :] *= pooled_gradients[i]
     heatmap = torch.mean(activations, dim=1).squeeze().cpu()
@@ -101,6 +129,7 @@ def get_prediction_and_cam(pil_img):
     heatmap /= torch.max(heatmap) if torch.max(heatmap) > 0 else 1
     top3 = [(CLASS_NAMES[top3_idx[i]], top3_prob[i].item()) for i in range(3)]
     return top3, heatmap.numpy()
+
 
 # --- 2. GIAO DIỆN MASTERPIECE V3.5.2 ---
 class AnimalApp(ctk.CTk):
@@ -114,11 +143,22 @@ class AnimalApp(ctk.CTk):
         self.prev_time = 0
         self.detection_stats = {}
         self.setup_ui()
+        
+        # Cảnh báo trực quan cho người dùng nếu chạy file nhưng thiếu file trọng số
+        if not weights_loaded:
+            messagebox.showerror(
+                "Lỗi Nạp Trọng Số AI",
+                "Không tìm thấy file trọng số 'ResNet18_Best_Weights.pth'!\n\n"
+                "Mô hình AI sẽ khởi tạo ngẫu nhiên, khả năng nhận diện sẽ không chính xác.\n"
+                "Hãy sao chép file 'ResNet18_Best_Weights.pth' đặt cùng thư mục với file code."
+            )
 
     def setup_ui(self):
         self.grid_columnconfigure(1, weight=3)
         self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(0, weight=1)
+        
+        # --- SIDEBAR THANH BÊN ---
         self.sidebar = ctk.CTkFrame(self, width=220, corner_radius=0)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
         ctk.CTkLabel(self.sidebar, text="AI DASHBOARD", font=ctk.CTkFont(size=22, weight="bold")).pack(pady=30)
@@ -128,8 +168,19 @@ class AnimalApp(ctk.CTk):
         self.btn_vid.pack(padx=20, pady=10)
         self.btn_stop = ctk.CTkButton(self.sidebar, text="⏹ Dừng xử lý", height=40, fg_color="#a13333", state="disabled", command=self.stop_video)
         self.btn_stop.pack(padx=20, pady=10)
+        
+        # Thanh kéo điều chỉnh Ngưỡng tin cậy
+        ctk.CTkLabel(self.sidebar, text="Ngưỡng tin cậy (%)", font=ctk.CTkFont(size=12, weight="bold")).pack(pady=(20, 2))
+        self.lbl_threshold = ctk.CTkLabel(self.sidebar, text="85%", font=ctk.CTkFont(size=14, weight="bold"))
+        self.lbl_threshold.pack()
+        self.slider_threshold = ctk.CTkSlider(self.sidebar, from_=30, to=100, number_of_steps=70, command=self.update_threshold_label)
+        self.slider_threshold.pack(padx=20, pady=5)
+        self.slider_threshold.set(85)
+        
         self.theme_menu = ctk.CTkOptionMenu(self.sidebar, values=["Dark", "Light"], command=ctk.set_appearance_mode)
         self.theme_menu.pack(padx=20, pady=20, side="bottom")
+
+        # --- KHUNG HIỂN THỊ CHÍNH (GIỮA) ---
         self.center_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.center_frame.grid(row=0, column=1, padx=15, pady=15, sticky="nsew")
         self.center_frame.grid_columnconfigure(0, weight=1)
@@ -140,6 +191,8 @@ class AnimalApp(ctk.CTk):
         self.display_container.grid(row=1, column=0, sticky="nsew")
         self.main_display = ctk.CTkLabel(self.display_container, text="")
         self.main_display.place(relx=0.5, rely=0.5, anchor="center")
+
+        # --- PANEL PHÂN TÍCH (BÊN PHẢI) ---
         self.analysis_panel = ctk.CTkFrame(self, width=350, corner_radius=15)
         self.analysis_panel.grid(row=0, column=2, padx=15, pady=15, sticky="nsew")
         ctk.CTkLabel(self.analysis_panel, text="EXPLAINABLE AI (GRAD-CAM)", font=ctk.CTkFont(size=14, weight="bold")).pack(pady=(15, 5))
@@ -161,6 +214,10 @@ class AnimalApp(ctk.CTk):
         self.info_text.insert("0.0", "Hồ sơ động vật sẽ hiển thị ở đây...")
         self.info_text.configure(state="disabled")
 
+    def update_threshold_label(self, val):
+        # Đã sửa lỗi Indentation: Slider chỉ thay đổi text hiển thị nhãn, không dựng lại widget giao diện.
+        self.lbl_threshold.configure(text=f"{int(val)}%")
+
     def process_image(self):
         self.stop_video()
         path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg *.jpeg *.png")])
@@ -169,18 +226,19 @@ class AnimalApp(ctk.CTk):
         self.analyze_and_show(img)
 
     def analyze_and_show(self, pil_img):
-        start_t = time.time()
         top3, heatmap = get_prediction_and_cam(pil_img)
-        latency = (time.time() - start_t) * 1000
         label, score = top3[0]
         
-        # Threshold 0.85
-        if score > 0.85:
+        # Cập nhật kết quả trên thanh trạng thái chính dựa theo ngưỡng Slider
+        threshold = self.slider_threshold.get() / 100.0
+        if score >= threshold:
             self.lbl_status_bar.configure(text=f"KẾT QUẢ: {label} ({score*100:.1f}%)", text_color="#4dbd74")
         else:
-            self.lbl_status_bar.configure(text="LOÀI LẠ: Không nằm trong danh sách bảo tồn.", text_color="#e74c3c")
-            
+            self.lbl_status_bar.configure(text="LOÀI LẠ: Độ tin cậy thấp.", text_color="#e74c3c")
+
         self.show_image_on_label(pil_img, self.main_display, (800, 480))
+        
+        # Luôn luôn hiển thị kết quả phân tích AI và Grad-CAM trực quan trên màn hình
         cam_img = self.apply_heatmap(pil_img, heatmap)
         self.show_image_on_label(cam_img, self.cam_display, (280, 180))
         for i, (name, prob) in enumerate(top3):
@@ -189,6 +247,7 @@ class AnimalApp(ctk.CTk):
         self.update_info_card(label, score)
 
     def apply_heatmap(self, pil_img, heatmap):
+        # Resize heatmap cho khớp kích cỡ ảnh đưa vào để trực quan chính xác
         heatmap = cv2.resize(heatmap, pil_img.size)
         heatmap = np.uint8(255 * heatmap)
         heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
@@ -207,7 +266,9 @@ class AnimalApp(ctk.CTk):
     def update_info_card(self, name, score):
         self.info_text.configure(state="normal")
         self.info_text.delete("0.0", "end")
-        if score > 0.85:
+        threshold = self.slider_threshold.get() / 100.0
+        
+        if score >= threshold:
             info = ANIMAL_INFO.get(name, {})
             text = f"KẾT QUẢ: {name.upper()}\n"
             text += f"Độ tin cậy: {score*100:.1f}%\n"
@@ -215,7 +276,10 @@ class AnimalApp(ctk.CTk):
             text += f"Mô tả: {info.get('desc', '---')}"
             self.info_text.insert("0.0", text)
         else:
-            self.info_text.insert("0.0", "CẢNH BÁO: Con vật này không thuộc 9 loài động vật quý hiếm mà dự án đang theo dõi.")
+            text = "CẢNH BÁO: Không xác định rõ loài hoặc độ tin cậy thấp.\n\n"
+            text += f"Dự đoán gần nhất: {name} ({score*100:.1f}%)\n\n"
+            text += "Vui lòng kéo hạ thanh 'Ngưỡng tin cậy (%)' ở thanh bên nếu muốn xem thông tin của con vật này."
+            self.info_text.insert("0.0", text)
         self.info_text.configure(state="disabled")
 
     def clear_analysis(self):
@@ -229,7 +293,7 @@ class AnimalApp(ctk.CTk):
         self.info_text.configure(state="disabled")
 
     def start_video(self):
-        path = filedialog.askopenfilename(filetypes=[("Video Files", "*.mp4 *.avi *.mov")])
+        path = filedialog.askopenfilename(filetypes=[("Video Files", "*.mp4 *.avi *.mov *.webm")])
         if not path: return
         self.cap = cv2.VideoCapture(path)
         self.video_running = True
@@ -250,12 +314,12 @@ class AnimalApp(ctk.CTk):
     def show_final_summary(self):
         if not self.detection_stats:
             self.lbl_status_bar.configure(text="KẾT QUẢ: KHÔNG XÁC ĐỊNH", text_color="#e74c3c")
-            messagebox.showwarning("Thông báo", "Hệ thống không phát hiện bất kỳ loài quý hiếm nào.")
+            messagebox.showwarning("Thông báo", "Hệ thống không phát hiện bất kỳ loài quý hiếm nào vượt ngưỡng.")
             return
         winner = max(self.detection_stats, key=self.detection_stats.get)
         self.update_info_card(winner, 1.0)
         self.lbl_status_bar.configure(text=f"KẾT QUẢ CHỐT: {winner.upper()}", text_color="#4dbd74")
-        messagebox.showinfo("Kết quả", f"Hệ thống xác nhận đây là: {winner}")
+        messagebox.showinfo("Kết quả video", f"Hệ thống xác nhận đây là: {winner}")
 
     def update_video(self):
         if not self.video_running or self.cap is None: return
@@ -268,22 +332,23 @@ class AnimalApp(ctk.CTk):
         rgb = cv2.cvtColor(display_frame, cv2.COLOR_BGR2RGB)
         pil_frame = Image.fromarray(rgb)
         
+        # Chỉ dự đoán mỗi 5 khung hình để tối ưu hóa CPU chạy mượt mà
         if int(self.cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
             top3, heatmap = get_prediction_and_cam(pil_frame)
             name, score = top3[0]
             
-            if score > 0.85:
+            # Luôn cập nhật các thanh xác suất và Grad-CAM trực quan trên màn hình
+            cam_img = self.apply_heatmap(pil_frame, heatmap)
+            self.show_image_on_label(cam_img, self.cam_display, (280, 180))
+            for i, (n, p) in enumerate(top3):
+                self.prob_bars[i][0].configure(text=f"{n[:12]}")
+                self.prob_bars[i][1].set(p)
+            self.update_info_card(name, score)
+
+            threshold = self.slider_threshold.get() / 100.0
+            if score >= threshold:
                 self.lbl_status_bar.configure(text=f"PHÁT HIỆN: {name} ({score*100:.0f}%)", text_color="#4dbd74")
                 self.detection_stats[name] = self.detection_stats.get(name, 0) + 1
-                self.update_info_card(name, score)
-                
-                # Live CAM
-                cam_img = self.apply_heatmap(pil_frame, heatmap)
-                self.show_image_on_label(cam_img, self.cam_display, (280, 180))
-                
-                for i, (n, p) in enumerate(top3):
-                    self.prob_bars[i][0].configure(text=f"{n[:12]}")
-                    self.prob_bars[i][1].set(p)
             else:
                 self.lbl_status_bar.configure(text="Quét tìm động vật quý hiếm...", text_color="cyan")
 
