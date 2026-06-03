@@ -117,7 +117,7 @@ def plot_multiclass_roc(model, dataloader, class_names, num_classes, device):
     plt.legend(loc="lower right", fontsize=9)
     plt.grid(alpha=0.3)
     
-    plt.savefig('ROC_AUC_Curve.png')
+    plt.savefig('ROC_AUC_Curve_New.png')
     plt.show()
 
 # KHOI LENH BAO VE MULTIPROCESSING TREN WINDOWS
@@ -257,7 +257,7 @@ if __name__ == '__main__':
     plt.grid(True)
 
     plt.tight_layout()
-    plt.savefig('Loss_Accuracy_Curves.png')
+    plt.savefig('Loss_Accuracy_Curves_New.png')
     plt.show()
 
     plot_multiclass_roc(best_model, dataloaders['val'], class_names, NUM_CLASSES, device)
