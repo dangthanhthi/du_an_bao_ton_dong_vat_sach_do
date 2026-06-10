@@ -224,10 +224,10 @@ Quá trình huấn luyện thực tế ghi nhận mức độ giảm sai số (L
 Hai biểu đồ dưới đây phản ánh tính khoa học, độ hội tụ lý tưởng và hiệu năng phân loại tuyệt đối của mô hình đã huấn luyện:
 
 #### 📊 Biểu đồ Mất mát (Loss) và Độ chính xác (Accuracy) qua 15 Epochs:
-![Biểu đồ Loss & Accuracy](Loss_Accuracy_Curves_New.png)
+![Biểu đồ Loss & Accuracy](thongtinthem/Loss_Accuracy_Curves_New.png)
 
 #### 📈 Biểu đồ ROC-AUC đa lớp (Đánh giá khả năng phân tách của mô hình):
-![Biểu đồ ROC-AUC đa lớp](ROC_AUC_Curve_New.png)
+![Biểu đồ ROC-AUC đa lớp](thongtinthem/ROC_AUC_Curve_New.png)
 
 ---
 

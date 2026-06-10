@@ -13,7 +13,9 @@ __pycache__/
 Bao_Cao_Dataset_Tien_Xu_Ly.md
 
 # Ignore thongtinthem folder (local non-code documents, figures, zip files)
-thongtinthem/
+thongtinthem/*
+!thongtinthem/
+!thongtinthem/*.png
 
 # Ignore DOCX files and Overleaf zip/folders
 *.docx
