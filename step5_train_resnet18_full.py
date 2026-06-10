@@ -138,9 +138,9 @@ if __name__ == '__main__':
 
     # Nếu chưa chia dữ liệu hoặc thư mục trống, chạy kịch bản tienxulyanh.py
     if not os.path.exists(SPLIT_DIR) or not os.listdir(SPLIT_DIR):
-        print("[*] Thư mục dữ liệu chia sẵn không tồn tại. Đang chạy 'tienxulyanh.py' để tiền xử lý và cân bằng tập Train...")
+        print("[*] Thư mục dữ liệu chia sẵn không tồn tại. Đang chạy 'step3_tienxulyanh.py' để tiền xử lý và cân bằng tập Train...")
         import subprocess
-        subprocess.run(["python", "tienxulyanh.py"], check=True)
+        subprocess.run(["python", "step3_tienxulyanh.py"], check=True)
     
     # 2. CẤU HÌNH DATALOADER & BIẾN ĐỔI ẢNH (TRANSFORMS)
     data_transforms = {

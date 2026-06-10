@@ -18,7 +18,7 @@ print("="*65)
 
 # --- 1. TỰ ĐỘNG DỌN DẸP & KHÔI PHỤC DỮ LIỆU GỐC ---
 try:
-    from clean_dataset import clean_and_reset_dataset
+    from step2_clean_dataset import clean_and_reset_dataset
     clean_and_reset_dataset()
 except Exception as e:
     print(f"[*] Cảnh báo khi dọn dẹp dữ liệu gốc: {e}")
