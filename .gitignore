@@ -22,7 +22,3 @@ thongtinthem/*
 baocao_overleaf.zip
 baocao_overleaf/
 
-# Ignore heavy pre-trained weights on main branch (offloaded to pretrained-model branch)
-ResNet18_Best_Weights.pth
-
-

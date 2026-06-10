@@ -131,10 +131,8 @@ graph TD
 
 ## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh
 
-> [!NOTE]
-> File trọng số huấn luyện sẵn **`ResNet18_Best_Weights.pth`** (nặng 45MB) được thiết lập bỏ qua không đưa lên GitHub để tối ưu dung lượng mã nguồn. 
-> *   **Để khởi chạy ngay:** Hãy đảm bảo tệp tin **`ResNet18_Best_Weights.pth`** đã được đặt ở thư mục gốc của dự án trên máy của bạn.
-> *   **Nếu chưa có:** Hãy chạy tuần tự Pipeline huấn luyện từ đầu (Giai Đoạn 3 dưới đây) để tự động sinh ra tệp trọng số tốt nhất này.
+> [!TIP]
+> Tệp trọng số huấn luyện sẵn **`ResNet18_Best_Weights.pth`** (nặng 45MB) đã được tích hợp sẵn trong thư mục gốc của dự án ở cả hai nhánh. Khi tải/pull dự án về, bạn có thể khởi chạy ngay các ứng dụng nhận diện mà không cần huấn luyện lại hoặc sao chép thủ công.
 
 Mở Terminal trong thư mục dự án và chạy các lệnh dưới đây:
 
