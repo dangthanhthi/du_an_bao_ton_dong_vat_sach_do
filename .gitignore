@@ -8,3 +8,12 @@ test/
 *.log
 __pycache__/
 .ipynb_checkpoints/
+
+# Ignore scientific report locally (kept on machine, not on Github)
+Bao_Cao_Dataset_Tien_Xu_Ly.md
+
+# Ignore DOCX files and Overleaf zip/folders
+*.docx
+baocao_overleaf.zip
+baocao_overleaf/
+
