@@ -14,28 +14,28 @@ Dưới đây là luồng đi của dữ liệu và các bước phát triển t
 graph TD
     %% Định nghĩa các bước trong Pipeline
     subgraph Phase 1: Kỹ Thuật Dữ Liệu
-        A[Thu thập dữ liệu thô<br><b>step1_crawl_bing_images.py</b>] --> B[Cân bằng dữ liệu & Augment<br><b>step4_canbang.py</b>]
+        A[Thu thập dữ liệu thô<br><b>1_crawl_bing_images.py</b>] --> B[Cân bằng dữ liệu & Augment<br><b>4_canbang.py</b>]
     end
 
     subgraph Phase 2: Tiền Xử Lý & Phân Tích
-        B --> C[Phân chia tập 7:2:1<br><b>step3_tienxulyanh.py</b>]
-        C --> D[Phân tích phân phối dữ liệu<br><b>step6_phantichdulieu.py</b>]
+        B --> C[Phân chia tập 7:2:1<br><b>3_tienxulyanh.py</b>]
+        C --> D[Phân tích phân phối dữ liệu<br><b>6_phantichdulieu.py</b>]
     end
 
     subgraph Phase 3: Thiết Kế & Huấn Luyện AI
-        D --> E[Thiết lập cấu trúc ResNet-18<br><b>step4_resnet18finetuning.py</b>]
-        E --> F[Vòng lặp huấn luyện tối ưu<br><b>step5_train_resnet18_full.py</b>]
+        D --> E[Thiết lập cấu trúc ResNet-18<br><b>4_resnet18finetuning.py</b>]
+        E --> F[Vòng lặp huấn luyện tối ưu<br><b>5_train_resnet18_full.py</b>]
     end
 
     subgraph Phase 4: Đánh Giá & Kiểm Thử
         F --> G[Lưu trọng số tốt nhất<br><b>ResNet18_Best_Weights.pth</b>]
-        G --> H[Tính toán ROC-AUC / Loss / Acc<br><b>step6_phantichthongso.py</b>]
+        G --> H[Tính toán ROC-AUC / Loss / Acc<br><b>6_phantichthongso.py</b>]
     end
 
     subgraph Phase 5: Triển Khai Ứng Dụng
-        G --> I[Ứng dụng Desktop + Grad-CAM<br><b>step7_app_desktop.py</b>]
-        G --> J[Ứng dụng Web Streamlit<br><b>step7_appnhandien.py</b>]
-        G --> K[Giao diện phụ video nhanh<br><b>step7_run_video_inference.py</b>]
+        G --> I[Ứng dụng Desktop + Grad-CAM<br><b>7_app_desktop.py</b>]
+        G --> J[Ứng dụng Web Streamlit<br><b>7_appnhandien.py</b>]
+        G --> K[Giao diện phụ video nhanh<br><b>7_run_video_inference.py</b>]
     end
 
     %% Định nghĩa màu sắc thẩm mỹ
@@ -60,30 +60,30 @@ graph TD
 * **MSSV:** 2001230918
 * **Vai trò:** Kỹ sư Dữ liệu & Phát triển Ứng dụng.
 * **Nhiệm vụ:**
-  - Thiết kế pipeline thu thập ảnh tự động (`step1_crawl_bing_images.py`).
-  - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng dữ liệu đạt chuẩn 300 ảnh/loài (`step4_canbang.py`).
-  - Lập trình giao diện ứng dụng Desktop chuyên nghiệp tích hợp giải thích AI Grad-CAM (`step7_app_desktop.py`) và ứng dụng Web trực tuyến Streamlit (`step7_appnhandien.py`).
-  - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`step4_resnet18finetuning.py`).
-  - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`step3_tienxulyanh.py`).
+  - Thiết kế pipeline thu thập ảnh tự động (`1_crawl_bing_images.py`).
+  - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng dữ liệu đạt chuẩn 300 ảnh/loài (`4_canbang.py`).
+  - Lập trình giao diện ứng dụng Desktop chuyên nghiệp tích hợp giải thích AI Grad-CAM (`7_app_desktop.py`) và ứng dụng Web trực tuyến Streamlit (`7_appnhandien.py`).
+  - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`4_resnet18finetuning.py`).
+  - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`3_tienxulyanh.py`).
 
 ### 2. Lưu Đức Linh
 * **MSSV:** 2001230444
 * **Vai trò:** Nhà nghiên cứu Mô hình AI & Huấn luyện.
 * **Nhiệm vụ:**
-  - Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`step1_crawl_bing_images.py`).
-  - Thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`step4_resnet18finetuning.py`).
-  - Thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`step5_train_resnet18_full.py`).
+  - Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`1_crawl_bing_images.py`).
+  - Thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`4_resnet18finetuning.py`).
+  - Thiết lập vòng lặp huấn luyện chính xác, cơ chế lưu mô hình tốt nhất (`5_train_resnet18_full.py`).
 
 ### 3. Trần Xuân Hướng
 * **MSSV:** 2001230339
 * **Vai trò:** Kỹ sư Phân tích Dữ liệu & Đánh giá Hiệu năng.
 * **Nhiệm vụ:**
-  - Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`step1_crawl_bing_images.py`).
-  - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`step3_tienxulyanh.py`).
-  - Thống kê biểu đồ phân bố và chất lượng tập dữ liệu đầu vào (`step6_phantichdulieu.py`).
-  - Tính toán các chỉ số đánh giá chuyên sâu (Loss, Accuracy, Confusion Matrix, ROC-AUC) để chứng minh tính chính xác của mô hình (`step6_phantichthongso.py`).
-  - Xây dựng giao diện phụ kiểm thử nhanh bằng Tkinter (`step7_run_video_inference.py`).
-  - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`step4_resnet18finetuning.py`).
+  - Hỗ trợ thiết kế pipeline thu thập ảnh tự động (`1_crawl_bing_images.py`).
+  - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`3_tienxulyanh.py`).
+  - Thống kê biểu đồ phân bố và chất lượng tập dữ liệu đầu vào (`6_phantichdulieu.py`).
+  - Tính toán các chỉ số đánh giá chuyên sâu (Loss, Accuracy, Confusion Matrix, ROC-AUC) để chứng minh tính chính xác của mô hình (`6_phantichthongso.py`).
+  - Xây dựng giao diện phụ kiểm thử nhanh bằng Tkinter (`7_run_video_inference.py`).
+  - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`4_resnet18finetuning.py`).
 
 ---
 
@@ -94,37 +94,37 @@ graph TD
 ### Giai Đoạn 1: Chuẩn Bị & Cân Bằng Dữ Liệu (Data Engineering)
 * **Mục tiêu:** Xây dựng tập dữ liệu đồng đều, chất lượng cao để mô hình AI học tốt nhất, tránh hiện tượng lệch lớp (class imbalance) khiến AI chỉ nhận diện tốt một số loài nhất định.
 * **Cách hoạt động:**
-  1. Cào ảnh tự động từ Bing (`step1_crawl_bing_images.py`) để gom hình ảnh gốc.
-  2. Phát hiện các thư mục thiếu ảnh và tự động áp dụng kỹ thuật **Image Augmentation** (`step4_canbang.py`) bao gồm: xoay ngẫu nhiên từ -15 đến 15 độ, lật ngang ảnh, và hiệu chỉnh độ sáng/độ tương phản để nhân bản dữ liệu một cách tự nhiên cho đến khi **mỗi loài có đủ chính xác 300 hình ảnh**.
+  1. Cào ảnh tự động từ Bing (`1_crawl_bing_images.py`) để gom hình ảnh gốc.
+  2. Phát hiện các thư mục thiếu ảnh và tự động áp dụng kỹ thuật **Image Augmentation** (`4_canbang.py`) bao gồm: xoay ngẫu nhiên từ -15 đến 15 độ, lật ngang ảnh, và hiệu chỉnh độ sáng/độ tương phản để nhân bản dữ liệu một cách tự nhiên cho đến khi **mỗi loài có đủ chính xác 300 hình ảnh**.
 
 ### Giai Đoạn 2: Tiền Xử Lý & Phân Tích Phân Phối (Data Analysis)
 * **Mục tiêu:** Chuẩn bị dữ liệu sẵn sàng cho huấn luyện và phân tích mức độ đa dạng của dữ liệu.
 * **Cách hoạt động:**
-  1. Chia tập dữ liệu (`step3_tienxulyanh.py`) theo tỷ lệ chuẩn **70% để học (Train)**, **20% để tinh chỉnh (Validation)**, và **10% để kiểm tra độc lập (Test)**.
-  2. Phân tích phân phối ảnh (`step6_phantichdulieu.py`) để kiểm tra tính đa dạng trước khi đưa vào mô hình huấn luyện.
+  1. Chia tập dữ liệu (`3_tienxulyanh.py`) theo tỷ lệ chuẩn **70% để học (Train)**, **20% để tinh chỉnh (Validation)**, và **10% để kiểm tra độc lập (Test)**.
+  2. Phân tích phân phối ảnh (`6_phantichdulieu.py`) để kiểm tra tính đa dạng trước khi đưa vào mô hình huấn luyện.
 
 ### Giai Đoạn 3: Thiết Kế Mô Hình & Huấn Luyện (Model Training)
 * **Mục tiêu:** Huấn luyện mạng nơ-ron sâu nhận diện chính xác 9 loài động vật.
 * **Cách hoạt động:**
-  1. Load kiến trúc mạng **ResNet-18** đã được tiền huấn luyện trên tập dữ liệu khổng lồ ImageNet (`step4_resnet18finetuning.py`). 
+  1. Load kiến trúc mạng **ResNet-18** đã được tiền huấn luyện trên tập dữ liệu khổng lồ ImageNet (`4_resnet18finetuning.py`). 
   2. Thực hiện **Fine-tuning**: Đóng băng các layer đầu (giữ nguyên khả năng nhận diện hình học, màu sắc cơ bản) và thay thế lớp Fully Connected (FC) cuối cùng thành một bộ phân loại mới gồm 9 lớp tương ứng với 9 loài động vật sách đỏ.
-  3. Huấn luyện mô hình (`step5_train_resnet18_full.py`): Sử dụng hàm mất mát `CrossEntropyLoss` và bộ tối ưu hóa `Adam`. Qua mỗi Epoch (vòng lặp học), mô hình tự động kiểm tra sai số trên tập Validation và chỉ lưu lại tệp trọng số tốt nhất là **`ResNet18_Best_Weights.pth`** để đưa vào ứng dụng thực tế.
+  3. Huấn luyện mô hình (`5_train_resnet18_full.py`): Sử dụng hàm mất mát `CrossEntropyLoss` và bộ tối ưu hóa `Adam`. Qua mỗi Epoch (vòng lặp học), mô hình tự động kiểm tra sai số trên tập Validation và chỉ lưu lại tệp trọng số tốt nhất là **`ResNet18_Best_Weights.pth`** để đưa vào ứng dụng thực tế.
 
 ### Giai Đoạn 4: Đánh Giá Chất Lượng (Model Evaluation)
 * **Mục tiêu:** Chứng minh độ chính xác và tính khoa học của mô hình bằng các số liệu toán học.
 * **Cách hoạt động:**
-  1. Sử dụng script `step6_phantichthongso.py` chạy kiểm thử trên tập dữ liệu Test độc lập (AI chưa từng thấy lúc học).
+  1. Sử dụng script `6_phantichthongso.py` chạy kiểm thử trên tập dữ liệu Test độc lập (AI chưa từng thấy lúc học).
   2. Vẽ biểu đồ biến thiên độ chính xác (`Loss_Accuracy_Curves.png`) để chứng minh mô hình hội tụ tốt, không bị hiện tượng học vẹt (overfitting).
   3. Vẽ biểu đồ `ROC_AUC_Curve.png` đánh giá tỷ lệ dương tính thật/giả của từng loài, giúp chứng minh hiệu năng phân loại đa lớp tối ưu.
 
 ### Giai Đoạn 5: Triển Khai Ứng Dụng Sản Phẩm (Deployment)
 * **Mục tiêu:** Đưa mô hình AI đã huấn luyện vào giao diện thực tế để người dùng cuối sử dụng.
 * **Cách hoạt động:**
-  1. **Ứng dụng Desktop chuyên nghiệp (`step7_app_desktop.py`):**
+  1. **Ứng dụng Desktop chuyên nghiệp (`7_app_desktop.py`):**
      - Viết bằng CustomTkinter tạo giao diện tối (Dark mode) hiện đại.
      - Tích hợp kỹ thuật **Grad-CAM**: Đọc kích hoạt (activations) và đạo hàm (gradients) từ lớp tích chập cuối cùng của mô hình ResNet-18 để vẽ bản đồ nhiệt trực quan hóa vùng trọng tâm trên ảnh mà AI đang "nhìn" để đưa ra quyết định.
      - Tích hợp bộ lọc ngưỡng tin cậy **85%**: Nếu mô hình dự đoán loài động vật dưới 85%, hệ thống sẽ cảnh báo là "loài lạ" để ngăn ngừa nhận diện sai.
-  2. **Ứng dụng Web trực tuyến Streamlit (`step7_appnhandien.py`):**
+  2. **Ứng dụng Web trực tuyến Streamlit (`7_appnhandien.py`):**
      - Cho phép người dùng tải lên hình ảnh hoặc chạy suy luận luồng video theo thời gian thực trên giao diện trình duyệt web cực kỳ mượt mà.
 
 ---
@@ -144,19 +144,19 @@ pip install torch torchvision numpy opencv-python pillow beautifulsoup4 requests
 
 * **Lựa chọn A: Khởi chạy Ứng dụng Desktop chính thức (CustomTkinter + Grad-CAM)**
   ```bash
-  python step7_app_desktop.py
+  python 7_app_desktop.py
   ```
   *(Cho phép tải ảnh/video lên để nhận diện trực quan bản đồ nhiệt Grad-CAM)*
 
 * **Lựa chọn B: Khởi chạy Ứng dụng Web trực tuyến (Streamlit)**
   ```bash
-  streamlit run step7_appnhandien.py
+  streamlit run 7_appnhandien.py
   ```
   *(Giao diện web trực quan, mượt mà trên trình duyệt)*
 
 * **Lựa chọn C: Khởi chạy giao diện phụ video kiểm thử nhanh**
   ```bash
-  python step7_run_video_inference.py
+  python 7_run_video_inference.py
   ```
 
 ---
@@ -167,13 +167,13 @@ Nếu bạn muốn chạy lại toàn bộ quy trình xử lý dữ liệu và h
 
 ### 1. Chạy Tiền xử lý & Chia tập dữ liệu (Đã sửa lỗi Data Leakage)
 ```bash
-python step3_tienxulyanh.py
+python 3_tienxulyanh.py
 ```
 *(Lệnh này tự động dọn dẹp các ảnh lỗi định dạng, chia tập dữ liệu 7:2:1 gốc độc lập, sau đó tự động chạy augment cân bằng tập Train đạt chuẩn 210 ảnh/loài).*
 
 ### 2. Chạy huấn luyện mô hình (Học lại từ đầu)
 ```bash
-python step5_train_resnet18_full.py
+python 5_train_resnet18_full.py
 ```
 *(Nếu muốn huấn luyện nhanh để kiểm tra mã nguồn, bạn có thể chỉnh siêu tham số `EPOCHS = 2` ở dòng 203 trong file).*
 
