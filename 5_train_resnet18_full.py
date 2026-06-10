@@ -14,13 +14,16 @@ from sklearn.preprocessing import label_binarize
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+#thực hiện vòng lặp huấn luyện chính. Mỗi vòng lặp lớn (Epoch) sẽ thực hiện qua 2 pha: Train (học) và Val (kiểm tra).
 def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, device, num_epochs=15):
     since = time.time()
     history = {'train_loss': [], 'val_loss': [], 'train_acc': [], 'val_acc': []}
     
+    #Tạo một bản sao lưu trọng số của mô hình để ghi nhận trạng thái tốt nhất
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
 
+    #Bat dau lap,  thiết lập cho từng pha
     for epoch in range(num_epochs):
         print(f'\nEpoch {epoch+1}/{num_epochs}')
         print('-' * 10)
@@ -31,6 +34,7 @@ def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, device,
             else:
                 model.eval()
 
+            #Doc du lieu , nap vao tb 
             running_loss = 0.0
             running_corrects = 0
 
@@ -38,25 +42,31 @@ def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, device,
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
-                optimizer.zero_grad()
 
-                with torch.set_grad_enabled(phase == 'train'):
-                    outputs = model(inputs)
-                    _, preds = torch.max(outputs, 1)
+                # Truyen Du lieu
+
+                optimizer.zero_grad()   #xoa cac gradient tu batch truoc 
+
+                with torch.set_grad_enabled(phase == 'train'):  # neu la pha train thi mo khoa gradient 
+                    outputs = model(inputs)      #  dua anh vao mo hinh 
+                    _, preds = torch.max(outputs, 1)    #lay max
                     loss = criterion(outputs, labels)
 
-                    if phase == 'train':
-                        loss.backward()
-                        optimizer.step()
+                    if phase == 'train':   
+                        loss.backward()    # tinh sai so 
+                        optimizer.step()     # cap nhap trong so 
+ 
 
-                running_loss += loss.item() * inputs.size(0)
-                running_corrects += torch.sum(preds == labels.data)
+                # tong hop ket qua , luu mo hinh tot nhat 
+                running_loss += loss.item() * inputs.size(0)    # xem tong loss
+                running_corrects += torch.sum(preds == labels.data)  # xem tong du doan dung 
 
-            epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects.double() / dataset_sizes[phase]
+            epoch_loss = running_loss / dataset_sizes[phase]     # tinh loss trung binh 
+            epoch_acc = running_corrects.double() / dataset_sizes[phase]   # do chinh xac trong tap du lieu 
 
             print(f'{phase.capitalize()} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
 
+            # luu du lieu de ve hinh 
             if phase == 'train':
                 history['train_loss'].append(epoch_loss)
                 history['train_acc'].append(epoch_acc.item())
@@ -64,10 +74,12 @@ def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, device,
                 history['val_loss'].append(epoch_loss)
                 history['val_acc'].append(epoch_acc.item())
 
+            # neu tot hon thi luu cai moi
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
 
+    # tra model ve trang thai goc 
     time_elapsed = time.time() - since
     print(f'\nHuan luyen hoan tat trong {time_elapsed // 60:.0f}p {time_elapsed % 60:.0f}s')
     print(f'Do chinh xac Validation cao nhat: {best_acc:4f}')
@@ -75,6 +87,7 @@ def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, device,
     model.load_state_dict(best_model_wts)
     return model, history
 
+# ham ve bieu do 
 def plot_multiclass_roc(model, dataloader, class_names, num_classes, device):
     print("[*] Dang tinh toan ma tran xac suat va ve bieu do ROC/AUC...")
     model.eval()
@@ -171,22 +184,6 @@ if __name__ == '__main__':
     image_datasets = {x: datasets.ImageFolder(os.path.join(SPLIT_DIR, x), data_transforms[x]) 
                       for x in ['train', 'val', 'test']}
     
-    # Khởi tạo Dataloader
-    # LƯU Ý HỌC THUẬT CHO BÁO CÁO: 
-    # Nếu muốn dùng WeightedRandomSampler cân bằng trực tiếp trong RAM thay vì cân bằng trên đĩa cứng:
-    # --------------------------------------------------------------------------------------
-    # train_dataset = image_datasets['train']
-    # class_counts = [0] * len(train_dataset.classes)
-    # for _, label in train_dataset.samples:
-    #     class_counts[label] += 1
-    # class_weights = 1.0 / np.array(class_counts)
-    # sample_weights = [class_weights[label] for _, label in train_dataset.samples]
-    # sampler = torch.utils.data.WeightedRandomSampler(sample_weights, num_samples=len(sample_weights), replacement=True)
-    #
-    # Khi đó ở dict dataloaders dưới đây, phần 'train' cấu hình như sau:
-    # 'train': DataLoader(image_datasets['train'], batch_size=BATCH_SIZE, sampler=sampler, num_workers=2)
-    # (Bỏ shuffle=True vì shuffle và sampler không thể dùng chung)
-    # --------------------------------------------------------------------------------------
 
     dataloaders = {x: DataLoader(image_datasets[x], batch_size=BATCH_SIZE, shuffle=(x=='train'), num_workers=2) 
                    for x in ['train', 'val', 'test']}
