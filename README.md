@@ -129,19 +129,15 @@ graph TD
 
 ---
 
-## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh (Sử Dụng Trọng Số Tích Hợp Sẵn)
+## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh
 
-> [!IMPORTANT]
-> Dự án được phân chia thành **2 nhánh chính** trên GitHub để quản lý tối ưu dung lượng:
-> *   **Nhánh `main` (Nhánh hiện tại):** Chỉ chứa mã nguồn và dữ liệu gốc (để gọn nhẹ khi clone). Bạn cần chạy toàn bộ pipeline từ đầu để sinh mô hình.
-> *   **Nhánh `pretrained-model`:** Tích hợp sẵn tệp trọng số tối ưu nhất là **`ResNet18_Best_Weights.pth`** trong thư mục gốc. Bạn có thể khởi chạy ngay ứng dụng mà không cần huấn luyện lại.
+> [!NOTE]
+> File trọng số huấn luyện sẵn **`ResNet18_Best_Weights.pth`** (nặng 45MB) được thiết lập bỏ qua không đưa lên GitHub để tối ưu dung lượng mã nguồn. 
+> *   **Để khởi chạy ngay:** Hãy đảm bảo tệp tin **`ResNet18_Best_Weights.pth`** đã được đặt ở thư mục gốc của dự án trên máy của bạn.
+> *   **Nếu chưa có:** Hãy chạy tuần tự Pipeline huấn luyện từ đầu (Giai Đoạn 3 dưới đây) để tự động sinh ra tệp trọng số tốt nhất này.
 
-Mở Terminal trong thư mục dự án và chạy các lệnh dưới đây để chuyển sang nhánh chứa mô hình và chạy ứng dụng:
+Mở Terminal trong thư mục dự án và chạy các lệnh dưới đây:
 
-### Bước 0: Chuyển sang nhánh `pretrained-model` để lấy model có sẵn
-```bash
-git checkout pretrained-model
-```
 
 
 ### Bước 1: Cài đặt toàn bộ thư viện cần thiết
