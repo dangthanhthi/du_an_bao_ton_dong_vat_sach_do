@@ -14,12 +14,12 @@ Dưới đây là luồng đi của dữ liệu và các bước phát triển t
 graph TD
     %% Định nghĩa các bước trong Pipeline
     subgraph Phase 1: Kỹ Thuật Dữ Liệu
-        A[Thu thập dữ liệu thô<br><b>1_crawl_bing_images.py</b>] --> B[Cân bằng dữ liệu & Augment<br><b>4_canbang.py</b>]
+        A[Thu thập dữ liệu thô<br><b>1_crawl_bing_images.py</b>] --> B[Làm sạch & Khôi phục dữ liệu gốc<br><b>2_clean_dataset.py</b>]
     end
 
     subgraph Phase 2: Tiền Xử Lý & Phân Tích
-        B --> C[Phân chia tập 7:2:1<br><b>3_tienxulyanh.py</b>]
-        C --> D[Phân tích phân phối dữ liệu<br><b>6_phantichdulieu.py</b>]
+        B --> C[Phân chia tập 7:2:1 & Cân bằng Train<br><b>3_tienxulyanh.py</b>]
+        C --> D[Phân tích phân phối dữ liệu (EDA)<br><b>6_phantichdulieu.py</b>]
     end
 
     subgraph Phase 3: Thiết Kế & Huấn Luyện AI
@@ -61,7 +61,7 @@ graph TD
 * **Vai trò:** Kỹ sư Dữ liệu & Phát triển Ứng dụng.
 * **Nhiệm vụ:**
   - Thiết kế pipeline thu thập ảnh tự động (`1_crawl_bing_images.py`).
-  - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng dữ liệu đạt chuẩn 300 ảnh/loài (`4_canbang.py`).
+  - Áp dụng các thuật toán Augmentation (lật, xoay, tăng giảm sáng...) để cân bằng tập Train con đạt chuẩn 210 ảnh/loài (`3_tienxulyanh.py`), giúp loại bỏ lỗi rò rỉ dữ liệu (Data Leakage).
   - Lập trình giao diện ứng dụng Desktop chuyên nghiệp tích hợp giải thích AI Grad-CAM (`7_app_desktop.py`) và ứng dụng Web trực tuyến Streamlit (`7_appnhandien.py`).
   - Hỗ trợ thiết kế kiến trúc Fine-tuning trên nền tảng ResNet-18: đóng băng (freeze) các tầng mạng dưới (Layer 1, 2) để giữ nguyên khả năng trích xuất đặc trưng cơ bản và rã đông (unfreeze) các tầng mạng trên (Layer 3, 4) để học đặc trưng riêng biệt của 9 loài động vật (`4_resnet18finetuning.py`).
   - Phân chia tập dữ liệu huấn luyện, kiểm thử theo tỷ lệ khoa học 7:2:1 (Train, Val, Test) (`3_tienxulyanh.py`).
@@ -91,17 +91,18 @@ graph TD
 
  Dưới đây là mô tả chi tiết của từng giai đoạn:
 
-### Giai Đoạn 1: Chuẩn Bị & Cân Bằng Dữ Liệu (Data Engineering)
-* **Mục tiêu:** Xây dựng tập dữ liệu đồng đều, chất lượng cao để mô hình AI học tốt nhất, tránh hiện tượng lệch lớp (class imbalance) khiến AI chỉ nhận diện tốt một số loài nhất định.
+### Giai Đoạn 1: Chuẩn Bị & Làm Sạch Dữ Liệu (Data Engineering)
+* **Mục tiêu:** Xây dựng tập dữ liệu gốc tinh khiết, sạch và đảm bảo tính toàn vẹn của dữ liệu trước khi huấn luyện.
 * **Cách hoạt động:**
-  1. Cào ảnh tự động từ Bing (`1_crawl_bing_images.py`) để gom hình ảnh gốc.
-  2. Phát hiện các thư mục thiếu ảnh và tự động áp dụng kỹ thuật **Image Augmentation** (`4_canbang.py`) bao gồm: xoay ngẫu nhiên từ -15 đến 15 độ, lật ngang ảnh, và hiệu chỉnh độ sáng/độ tương phản để nhân bản dữ liệu một cách tự nhiên cho đến khi **mỗi loài có đủ chính xác 300 hình ảnh**.
+  1. Cào ảnh tự động từ Bing (`1_crawl_bing_images.py`) để thu gom hình ảnh gốc của các loài động vật hoang dã.
+  2. Tự động kiểm tra định dạng và làm sạch dữ liệu (`2_clean_dataset.py`), xóa bỏ các ảnh lỗi cấu trúc nhị phân và ảnh augment cũ để đưa tập dữ liệu gốc về trạng thái sạch nhất.
 
-### Giai Đoạn 2: Tiền Xử Lý & Phân Tích Phân Phối (Data Analysis)
-* **Mục tiêu:** Chuẩn bị dữ liệu sẵn sàng cho huấn luyện và phân tích mức độ đa dạng của dữ liệu.
+### Giai Đoạn 2: Tiền Xử Lý & Phân Tích Phân Phối (Data Preprocessing & Analysis)
+* **Mục tiêu:** Phân chia độc lập dữ liệu để ngăn chặn hoàn toàn lỗi rò rỉ dữ liệu (Data Leakage) và thực hiện phân tích thống kê.
 * **Cách hoạt động:**
-  1. Chia tập dữ liệu (`3_tienxulyanh.py`) theo tỷ lệ chuẩn **70% để học (Train)**, **20% để tinh chỉnh (Validation)**, và **10% để kiểm tra độc lập (Test)**.
-  2. Phân tích phân phối ảnh (`6_phantichdulieu.py`) để kiểm tra tính đa dạng trước khi đưa vào mô hình huấn luyện.
+  1. Chia tập dữ liệu gốc sạch (`3_tienxulyanh.py`) theo tỷ lệ chuẩn **70% để học (Train)**, **20% để tinh chỉnh (Validation)**, và **10% để kiểm tra độc lập (Test)**.
+  2. Thực hiện cân bằng dữ liệu bằng kỹ thuật **Image Augmentation** (`3_tienxulyanh.py`) bao gồm xoay $\pm 15^\circ$, lật ngang và đổi sáng/đối tương phản **chỉ áp dụng trên tập Train con** để nâng số ảnh lên đồng đều **210 ảnh/loài** (Tập Val và Test hoàn toàn giữ nguyên ảnh gốc sạch).
+  3. Thống kê biểu đồ phân bố và vẽ lưới ảnh mẫu (`6_phantichdulieu.py`) để trực quan hóa dữ liệu trước khi đưa vào mô hình huấn luyện.
 
 ### Giai Đoạn 3: Thiết Kế Mô Hình & Huấn Luyện (Model Training)
 * **Mục tiêu:** Huấn luyện mạng nơ-ron sâu nhận diện chính xác 9 loài động vật.
