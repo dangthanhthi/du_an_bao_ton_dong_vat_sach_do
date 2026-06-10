@@ -12,6 +12,9 @@ __pycache__/
 # Ignore scientific report locally (kept on machine, not on Github)
 Bao_Cao_Dataset_Tien_Xu_Ly.md
 
+# Ignore thongtinthem folder (local non-code documents, figures, zip files)
+thongtinthem/
+
 # Ignore DOCX files and Overleaf zip/folders
 *.docx
 baocao_overleaf.zip
