@@ -129,11 +129,20 @@ graph TD
 
 ---
 
-## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh (Chạy Luôn Bằng Trọng Số Sẵn Có)
+## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy Nhanh (Sử Dụng Trọng Số Tích Hợp Sẵn)
 
-Dự án đã tích hợp sẵn tệp trọng số tối ưu nhất là **`ResNet18_Best_Weights.pth`** trong thư mục gốc. Người dùng tải về có thể khởi chạy ứng dụng để trải nghiệm ngay mà không cần phải thực hiện tiền xử lý hay huấn luyện lại từ đầu.
+> [!IMPORTANT]
+> Dự án được phân chia thành **2 nhánh chính** trên GitHub để quản lý tối ưu dung lượng:
+> *   **Nhánh `main` (Nhánh hiện tại):** Chỉ chứa mã nguồn và dữ liệu gốc (để gọn nhẹ khi clone). Bạn cần chạy toàn bộ pipeline từ đầu để sinh mô hình.
+> *   **Nhánh `pretrained-model`:** Tích hợp sẵn tệp trọng số tối ưu nhất là **`ResNet18_Best_Weights.pth`** trong thư mục gốc. Bạn có thể khởi chạy ngay ứng dụng mà không cần huấn luyện lại.
 
-Mở Terminal tích hợp trong **VS Code** (Phím tắt `Ctrl + \``) và chạy các lệnh dưới đây:
+Mở Terminal trong thư mục dự án và chạy các lệnh dưới đây để chuyển sang nhánh chứa mô hình và chạy ứng dụng:
+
+### Bước 0: Chuyển sang nhánh `pretrained-model` để lấy model có sẵn
+```bash
+git checkout pretrained-model
+```
+
 
 ### Bước 1: Cài đặt toàn bộ thư viện cần thiết
 ```bash
