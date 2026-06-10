@@ -14,28 +14,28 @@ Dưới đây là luồng đi của dữ liệu và các bước phát triển t
 graph TD
     %% Định nghĩa các bước trong Pipeline
     subgraph Phase 1: Kỹ Thuật Dữ Liệu
-        A[Thu thập dữ liệu thô<br><b>1_crawl_bing_images.py</b>] --> B[Làm sạch & Khôi phục dữ liệu gốc<br><b>2_clean_dataset.py</b>]
+        A["Thu thập dữ liệu thô<br><b>1_crawl_bing_images.py</b>"] --> B["Làm sạch & Khôi phục dữ liệu gốc<br><b>2_clean_dataset.py</b>"]
     end
 
     subgraph Phase 2: Tiền Xử Lý & Phân Tích
-        B --> C[Phân chia tập 7:2:1 & Cân bằng Train<br><b>3_tienxulyanh.py</b>]
-        C --> D[Phân tích phân phối dữ liệu (EDA)<br><b>6_phantichdulieu.py</b>]
+        B --> C["Phân chia tập 7:2:1 & Cân bằng Train<br><b>3_tienxulyanh.py</b>"]
+        C --> D["Phân tích phân phối dữ liệu (EDA)<br><b>6_phantichdulieu.py</b>"]
     end
 
     subgraph Phase 3: Thiết Kế & Huấn Luyện AI
-        D --> E[Thiết lập cấu trúc ResNet-18<br><b>4_resnet18finetuning.py</b>]
-        E --> F[Vòng lặp huấn luyện tối ưu<br><b>5_train_resnet18_full.py</b>]
+        D --> E["Thiết lập cấu trúc ResNet-18<br><b>4_resnet18finetuning.py</b>"]
+        E --> F["Vòng lặp huấn luyện tối ưu<br><b>5_train_resnet18_full.py</b>"]
     end
 
     subgraph Phase 4: Đánh Giá & Kiểm Thử
-        F --> G[Lưu trọng số tốt nhất<br><b>ResNet18_Best_Weights.pth</b>]
-        G --> H[Tính toán ROC-AUC / Loss / Acc<br><b>6_phantichthongso.py</b>]
+        F --> G["Lưu trọng số tốt nhất<br><b>ResNet18_Best_Weights.pth</b>"]
+        G --> H["Tính toán ROC-AUC / Loss / Acc<br><b>6_phantichthongso.py</b>"]
     end
 
     subgraph Phase 5: Triển Khai Ứng Dụng
-        G --> I[Ứng dụng Desktop + Grad-CAM<br><b>7_app_desktop.py</b>]
-        G --> J[Ứng dụng Web Streamlit<br><b>7_appnhandien.py</b>]
-        G --> K[Giao diện phụ video nhanh<br><b>7_run_video_inference.py</b>]
+        G --> I["Ứng dụng Desktop + Grad-CAM<br><b>7_app_desktop.py</b>"]
+        G --> J["Ứng dụng Web Streamlit<br><b>7_appnhandien.py</b>"]
+        G --> K["Giao diện phụ video nhanh<br><b>7_run_video_inference.py</b>"]
     end
 
     %% Định nghĩa màu sắc thẩm mỹ
